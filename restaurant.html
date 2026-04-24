@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NGO Dashboard — LAST BITE</title>
+<meta name="description" content="NGO manager dashboard to list surplus food for Flash Sales or NGO donations."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div><span class="logo-text" style="display:none;">LAST BITE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html" class="active">Dashboard</a></li>
+    <li><a href="NGO.html">NGO View</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="delivery.html">Delivery</a></li>
+    <li><a href="farmer.html">Farmer Portal</a></li>
+    <li><a href="impact.html">Analytics</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-green animate-pulse">🟢 Spice Garden — Online</span>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div style="text-align:center;padding:0 8px 20px;">
+      <div style="font-size:40px;margin-bottom:8px;">🍛</div>
+      <div style="font-weight:700;">Spice Garden</div>
+      <div style="font-size:12px;color:#94a3b8;">Connaught Place, Delhi</div>
+      <div style="margin-top:10px;">
+        <span style="color:#fbbf24;font-size:16px;">★★★★☆</span>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Green Star: Gold</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <ul class="sidebar-menu">
+      <div class="sidebar-section-label">Main Menu</div>
+      <li><a href="#overview" class="active" onclick="showSection('overview',this)"><span class="menu-icon">📊</span>Overview</a></li>
+      <li><a href="#add" onclick="showSection('add',this)"><span class="menu-icon">➕</span>Add Surplus Food</a></li>
+      <li><a href="#active" onclick="showSection('active',this)"><span class="menu-icon">⚡</span>Active Listings</a></li>
+      <li><a href="#history" onclick="showSection('history',this)"><span class="menu-icon">📋</span>History</a></li>
+      <li><a href="#buycrops" onclick="showSection('buycrops',this)" style="color:#a3e635;"><span class="menu-icon">🌾</span>Buy Fresh Crops</a></li>
+      <div class="sidebar-section-label">Rewards</div>
+      <li><a href="#greenstars" onclick="showSection('greenstars',this)"><span class="menu-icon">⭐</span>Green Star Rating</a></li>
+      <li><a href="#impact" onclick="showSection('impact',this)"><span class="menu-icon">🌍</span>My Impact</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- OVERVIEW SECTION -->
+    <div id="sec-overview">
+      <div class="page-header flex-between">
+        <div><h1 class="page-title">NGO Dashboard</h1><p class="page-sub">Manage your surplus food listings</p></div>
+        <button class="btn btn-primary" onclick="showSection('add',null);document.querySelector('[href=\'#add\']').classList.add('active');">➕ Add Surplus Food</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4 mb-24" id="overviewStats"></div>
+
+      <!-- AI Insights -->
+      <div class="card mb-24">
+        <div class="card-header"><h3 class="card-title">🤖 AI Insights Today</h3><span class="badge badge-blue">Live Analysis</span></div>
+        <div class="grid-4" id="aiInsights"></div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">📋 Recent Listings</h3><a href="#" onclick="showSection('active',null)" style="font-size:13px;color:#22c55e;text-decoration:none;">View All →</a></div>
+        <div id="recentListings"></div>
+      </div>
+    </div>
+
+    <!-- ADD FOOD SECTION -->
+    <div id="sec-add" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">➕ Add Surplus Food</h1>
+        <p class="page-sub">Enter details and AI will decide — Flash Sale or Donate</p>
+      </div>
+      <div class="grid-2" style="gap:24px;align-items:start;">
+        <div class="card">
+          <h3 class="card-title mb-16">📝 Food Item Details</h3>
+          <div class="form-group">
+            <label class="form-label">Item Name *</label>
+            <input id="iName" class="form-control" placeholder="e.g., Butter Chicken, Biryani..." type="text"/>
+          </div>
+          <div class="grid-2 gap-16">
+            <div class="form-group">
+              <label class="form-label">Quantity (Plates/Portions) *</label>
+              <input id="iQty" class="form-control" type="number" min="1" placeholder="e.g., 10"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Original Price (₹) *</label>
+              <input id="iPrice" class="form-control" type="number" min="1" placeholder="e.g., 280"/>
+            </div>
+          </div>
+          <div class="grid-2 gap-16">
+            <div class="form-group">
+              <label class="form-label">Food Category *</label>
+              <select id="iCategory" class="form-control" onchange="updateAIPreview()">
+                <option value="Fresh">🟢 Fresh (Cooked, stable)</option>
+                <option value="Perishable">🟠 Perishable (Must go soon)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Safe Hours Remaining *</label>
+              <select id="iExpiry" class="form-control" onchange="updateAIPreview()">
+                <option value="5">5 hours</option>
+                <option value="4">4 hours</option>
+                <option value="3">3 hours</option>
+                <option value="2">2 hours</option>
+                <option value="1">1 hour</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Item Emoji (optional)</label>
+            <input id="iEmoji" class="form-control" placeholder="e.g., 🍛 🍚 🍜" maxlength="4"/>
+          </div>
+          <button class="btn btn-primary w-full btn-lg" onclick="submitFoodItem()">🚀 Submit — Let AI Decide</button>
+        </div>
+
+        <!-- AI Preview -->
+        <div>
+          <div class="card mb-20" id="aiPreviewCard" style="border-color:rgba(59,130,246,0.3);">
+            <h3 class="card-title mb-16">🤖 AI Preview</h3>
+            <div id="aiPreviewContent">
+              <div style="text-align:center;padding:20px;color:#94a3b8;">
+                <div style="font-size:40px;margin-bottom:10px;">🤖</div>
+                <p>Fill in the form to see AI recommendation</p>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="border-color:rgba(249,115,22,0.3);">
+            <h3 class="card-title mb-12">📉 Dynamic Pricing Schedule</h3>
+            <div id="pricingSchedule"><p style="color:#94a3b8;font-size:13px;">Enter original price to see schedule</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE LISTINGS -->
+    <div id="sec-active" class="hidden">
+      <div class="page-header flex-between">
+        <div><h1 class="page-title">⚡ Active Listings</h1><p class="page-sub">Currently live on platform</p></div>
+        <div class="badge badge-orange animate-pulse" id="activeCount">Loading...</div>
+      </div>
+      <div class="grid-3" id="activeGrid"></div>
+    </div>
+
+    <!-- HISTORY -->
+    <div id="sec-history" class="hidden">
+      <div class="page-header"><h1 class="page-title">📋 Transaction History</h1><p class="page-sub">All your past listings and outcomes</p></div>
+      <div class="card"><div class="table-wrap"><table id="historyTable"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Status</th><th>OTP</th><th>Time</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+    </div>
+
+    <!-- BUY CROPS FROM FARMERS -->
+    <div id="sec-buycrops" class="hidden">
+      <div class="page-header flex-between">
+        <div><h1 class="page-title">🌾 Buy Fresh from Farmers</h1><p class="page-sub">Direct B2B sourcing from local villages</p></div>
+        <span class="badge" style="background:rgba(77,124,15,0.2);color:#bef264;">Farmer Connect</span>
+      </div>
+      <div class="grid-3" id="NGOCropsGrid"></div>
+    </div>
+
+    <!-- GREEN STARS -->
+    <div id="sec-greenstars" class="hidden">
+      <div class="page-header"><h1 class="page-title">⭐ Green Star Rating</h1><p class="page-sub">Your sustainability score</p></div>
+      <div class="grid-2" style="gap:24px;">
+        <div class="green-star-card">
+          <div style="text-align:center;padding:20px 0;">
+            <div style="font-size:64px;margin-bottom:8px;">⭐</div>
+            <div class="green-star-score" id="gsScore">680</div>
+            <div style="color:#fbbf24;font-size:24px;margin:8px 0;" id="gsStars">★★★★☆</div>
+            <div class="badge badge-gold" id="gsLabel">Gold Green NGO</div>
+            <div style="margin-top:16px;color:#94a3b8;font-size:14px;">You've saved <strong style="color:#22c55e;" id="gsMeals">312</strong> meals!</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card-title mb-16">How Points Are Earned</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="flex-between" style="padding:12px;background:rgba(34,197,94,0.08);border-radius:10px;">
+              <div><span>💝 Each Meal Donated</span></div><div class="text-green font-bold">+5 pts</div>
+            </div>
+            <div class="flex-between" style="padding:12px;background:rgba(249,115,22,0.08);border-radius:10px;">
+              <div><span>⚡ Each Flash Sale Item Sold</span></div><div class="text-orange font-bold">+2 pts</div>
+            </div>
+            <div class="flex-between" style="padding:12px;background:rgba(239,68,68,0.08);border-radius:10px;">
+              <div><span>❌ Reported item wasted</span></div><div class="text-red font-bold">-10 pts</div>
+            </div>
+          </div>
+          <div class="mt-24">
+            <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">Progress to Platinum (800 pts)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
+            <div style="font-size:12px;color:#94a3b8;margin-top:6px;">680 / 800 — 120 pts to go!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY IMPACT -->
+    <div id="sec-impact" class="hidden">
+      <div class="page-header"><h1 class="page-title">🌍 My Impact</h1><p class="page-sub">Your NGO's contribution to Zero Hunger</p></div>
+      <div class="grid-3 mb-24">
+        <div class="stat-card"><span class="stat-icon">🍽️</span><div class="stat-value" id="myMeals">312</div><div class="stat-label">Meals Saved</div></div>
+        <div class="stat-card"><span class="stat-icon">🌿</span><div class="stat-value orange" id="myCo2">390 kg</div><div class="stat-label">CO₂ Prevented</div></div>
+        <div class="stat-card"><span class="stat-icon">💰</span><div class="stat-value gold" id="myRevenue">₹28,400</div><div class="stat-label">Revenue Recovered</div></div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(249,115,22,0.04));">
+        <h3 class="card-title mb-16">📢 Your Impact Statement</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;">
+          <div style="padding:20px;background:rgba(34,197,94,0.08);border-radius:14px;">
+            <div style="font-size:2rem;font-weight:800;color:#22c55e;font-family:'Poppins',sans-serif;">156 kg</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">Food saved from landfill</div>
+          </div>
+          <div style="padding:20px;background:rgba(249,115,22,0.08);border-radius:14px;">
+            <div style="font-size:2rem;font-weight:800;color:#f97316;font-family:'Poppins',sans-serif;">390 kg</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">CO₂ emission prevented</div>
+          </div>
+          <div style="padding:20px;background:rgba(251,191,36,0.08);border-radius:14px;">
+            <div style="font-size:2rem;font-weight:800;color:#fbbf24;font-family:'Poppins',sans-serif;">80 families</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">Fed through donations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- OTP MODAL -->
+<div class="modal-overlay hidden" id="otpModal">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+      <h3 class="modal-title">OTP Verification</h3>
+      <p class="modal-sub">Share this OTP with the NGO at pickup</p>
+      <div class="otp-display" id="otpDigits"></div>
+      <div class="badge badge-green mb-16" id="otpItemName">Item Name</div>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:20px;">NGO must show this OTP. Enter it below to confirm handover.</p>
+      <div class="form-group">
+        <input class="form-control" id="otpInput" placeholder="Enter 4-digit OTP from NGO" maxlength="4" type="number"/>
+      </div>
+      <button class="btn btn-primary w-full" onclick="verifyOTP()">✅ Confirm Handover</button>
+      <button class="btn btn-ghost w-full mt-8" onclick="closeModal('otpModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+let currentOTP = '';
+
+function showSection(name, linkEl) {
+  document.querySelectorAll('[id^="sec-"]').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-'+name).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+}
+
+function updateAIPreview() {
+  const cat = document.getElementById('iCategory').value;
+  const exp = parseInt(document.getElementById('iExpiry').value);
+  const price = parseInt(document.getElementById('iPrice').value) || 0;
+  const name = document.getElementById('iName').value || 'Food Item';
+  const qty = parseInt(document.getElementById('iQty').value) || 1;
+
+  const decision = AIEngine.decide({ category:cat, expiryHours:exp, qty });
+  const sell = AIEngine.predictSellProbability({ category:cat, discount:decision.discount, qty, expiryHours:exp });
+
+  document.getElementById('aiPreviewContent').innerHTML = `
+    <div class="ai-rec-box mb-16">
+      <div class="ai-rec-icon">🤖</div>
+      <div>
+        <div class="ai-rec-label">AI Recommendation</div>
+        <div class="ai-rec-value text-${decision.action==='FLASH_SALE'?'orange':'green'}">${decision.badge}</div>
+        <div class="text-xs text-muted mt-8">${decision.reason}</div>
+      </div>
+    </div>
+    ${price>0 && decision.action==='FLASH_SALE' ? `
+    <div class="flex-between mb-16">
+      <div><div style="font-size:11px;color:#94a3b8;">Original Price</div><div style="font-size:1.1rem;font-weight:700;text-decoration:line-through;color:#475569;">₹${price}</div></div>
+      <div style="font-size:1.5rem;">→</div>
+      <div><div style="font-size:11px;color:#94a3b8;">Flash Sale Price</div><div style="font-size:1.4rem;font-weight:800;color:#22c55e;font-family:'Poppins',sans-serif;">₹${Math.round(price*(1-decision.discount/100))}</div></div>
+      <div class="badge badge-orange">${decision.discount}% OFF</div>
+    </div>` : ''}
+    <div style="margin-bottom:12px;">
+      <div style="font-size:12px;color:#94a3b8;margin-bottom:6px;">Sell Probability</div>
+      <div class="progress-bar"><div class="progress-fill ${sell>60?'':'orange'}" style="width:${sell}%;"></div></div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px;">${sell}% likely to sell</div>
+    </div>
+  `;
+
+  if (price > 0) {
+    const item = { originalPrice: price };
+    document.getElementById('pricingSchedule').innerHTML = PricingEngine.renderPriceSchedule(item);
+  }
+}
+
+function submitFoodItem() {
+  const name = document.getElementById('iName').value.trim();
+  const qty = parseInt(document.getElementById('iQty').value);
+  const price = parseInt(document.getElementById('iPrice').value);
+  const cat = document.getElementById('iCategory').value;
+  const exp = parseInt(document.getElementById('iExpiry').value);
+  const emoji = document.getElementById('iEmoji').value || '🍽️';
+
+  if (!name || !qty || !price) { showToast('red', '❌ Missing Fields', 'Please fill all required fields'); return; }
+
+  const item = { name, qty, originalPrice:price, category:cat, expiryHours:exp, emoji, NGO:'Spice Garden', NGOId:'r1', area:'Connaught Place' };
+  addFoodItem(item);
+
+  // Reset
+  ['iName','iQty','iPrice','iEmoji'].forEach(id => document.getElementById(id).value='');
+  showSection('active', document.querySelector('[href="#active"]'));
+  renderActive();
+}
+
+function renderActive() {
+  const items = getFoodItems().filter(i => i.status === 'FlashSale');
+  document.getElementById('activeCount').textContent = `${items.length} Active`;
+  const grid = document.getElementById('activeGrid');
+  if (!items.length) { grid.innerHTML = '<div class="card text-center" style="grid-column:1/-1;padding:40px;"><div style="font-size:40px;">📭</div><p style="color:#94a3b8;margin-top:10px;">No active listings. Add surplus food to start!</p></div>'; return; }
+  grid.innerHTML = items.map(item => {
+    const curPrice = getCurrentPrice(item);
+    const c = getExpiryCountdown(item);
+    return `
+    <div class="food-card">
+      <div class="food-card-emoji">${item.emoji||'🍽️'}</div>
+      <div class="food-card-body">
+        <div class="flex-between mb-8"><div class="food-card-name">${item.name}</div><span class="badge badge-orange">⚡ Flash</span></div>
+        <div class="food-card-price-row">
+          <span class="price-current">₹${curPrice}</span>
+          <span class="price-original">₹${item.originalPrice}</span>
+          <span class="price-badge">${item.discount}% OFF</span>
+        </div>
+        <div class="food-timer">⏱ ${c.h}h ${c.m}m remaining</div>
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:12px;">📦 ${item.qty} portions left</div>
+        <button class="btn btn-primary btn-sm w-full" onclick="openOTPModal('${item.id}','${item.name}','${generateOTP()}')">🔐 Verify Pickup OTP</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderOverview() {
+  const items = getFoodItems();
+  const flash = items.filter(i=>i.status==='FlashSale').length;
+  const donated = items.filter(i=>i.status==='Donated').length;
+  const claimed = items.filter(i=>i.status==='Claimed').length;
+  const qty = items.reduce((s,i)=>s+(i.qty||0),0);
+
+  document.getElementById('overviewStats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon">⚡</span><div class="stat-value">${flash}</div><div class="stat-label">Flash Sales Active</div></div>
+    <div class="stat-card"><span class="stat-icon">💝</span><div class="stat-value orange">${donated}</div><div class="stat-label">Items Donated</div></div>
+    <div class="stat-card"><span class="stat-icon">✅</span><div class="stat-value gold">${claimed}</div><div class="stat-label">Orders Claimed</div></div>
+    <div class="stat-card"><span class="stat-icon">📦</span><div class="stat-value">${qty}</div><div class="stat-label">Total Portions</div></div>
+  `;
+
+  const insights = AIEngine.getInsights(items);
+  document.getElementById('aiInsights').innerHTML = insights.map(ins => `
+    <div class="stat-card" style="padding:14px;">
+      <div style="font-size:22px;margin-bottom:6px;">${ins.icon}</div>
+      <div style="font-weight:700;font-size:15px;color:var(--${ins.color==='orange'?'orange-energy':ins.color==='blue'?'blue-info':'green-primary'})">${ins.value}</div>
+      <div class="stat-label">${ins.label}</div>
+    </div>
+  `).join('');
+
+  const recent = getFoodItems().slice(0,4);
+  document.getElementById('recentListings').innerHTML = `<div class="table-wrap"><table><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Status</th><th>Action</th></tr></thead><tbody>${
+    recent.map(i=>`<tr><td>${i.emoji||'🍽️'} ${i.name}</td><td>${i.qty}</td><td>₹${getCurrentPrice(i)}</td><td><span class="badge badge-${i.status==='FlashSale'?'orange':i.status==='Donated'?'green':'blue'}">${i.status}</span></td><td><button class="btn btn-ghost btn-xs" onclick="openOTPModal('${i.id}','${i.name}','${generateOTP()}')">🔐 OTP</button></td></tr>`).join('')
+  }</tbody></table></div>`;
+}
+
+function openOTPModal(id, name, otp) {
+  currentOTP = otp;
+  document.getElementById('otpItemName').textContent = name;
+  document.getElementById('otpDigits').innerHTML = otp.split('').map(d=>`<div class="otp-digit">${d}</div>`).join('');
+  document.getElementById('otpModal').classList.remove('hidden');
+}
+
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+function verifyOTP() {
+  const entered = document.getElementById('otpInput').value.trim();
+  if (entered === currentOTP) {
+    showToast('green','✅ OTP Verified!','Handover confirmed. Transaction complete!');
+    closeModal('otpModal');
+    document.getElementById('otpInput').value='';
+  } else {
+    showToast('red','❌ Wrong OTP','Please check and try again');
+  }
+}
+
+function renderBuyCrops() {
+  const crops = getCrops().filter(c => c.status === 'Available');
+  const grid = document.getElementById('NGOCropsGrid');
+  if (!crops.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">No fresh crops available right now.</div>'; return; }
+  
+  grid.innerHTML = crops.map(c => `
+    <div class="card" style="border-color:rgba(77,124,15,0.3);background:linear-gradient(135deg,rgba(77,124,15,0.05),transparent);">
+      <div class="flex-between mb-12">
+        <div style="font-weight:700;font-size:18px;">${c.name}</div>
+        <span class="badge" style="background:rgba(77,124,15,0.2);color:#bef264;">${c.area}</span>
+      </div>
+      <div style="color:#94a3b8;font-size:13px;margin-bottom:16px;">👨‍🌾 Farmer: ${c.farmer}</div>
+      <div class="flex-between" style="background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-bottom:16px;">
+        <div><div style="font-size:11px;color:#94a3b8;">Volume</div><div style="font-weight:700;">${c.qty} kg</div></div>
+        <div><div style="font-size:11px;color:#94a3b8;">Rate</div><div style="font-weight:700;">₹${c.price}/kg</div></div>
+        <div style="text-align:right;"><div style="font-size:11px;color:#94a3b8;">Total</div><div style="font-weight:700;color:#a3e635;">₹${c.qty*c.price}</div></div>
+      </div>
+      <button class="btn w-full" style="background:linear-gradient(135deg, #65a30d, #4d7c0f);color:#fff;" onclick="requestCropFromRest('${c.id}')">Request to Buy</button>
+    </div>
+  `).join('');
+}
+
+function requestCropFromRest(id) {
+  requestCrop(id);
+  renderBuyCrops();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderOverview();
+  renderActive();
+  document.querySelectorAll('.sidebar-menu a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const sec = a.getAttribute('href').replace('#','');
+      showSection(sec, a);
+      if (sec==='active') renderActive();
+      if (sec==='overview') renderOverview();
+      if (sec==='buycrops') renderBuyCrops();
+    });
+  });
+  // live update AI preview
+  ['iCategory','iExpiry'].forEach(id => document.getElementById(id).addEventListener('change', updateAIPreview));
+  ['iName','iQty','iPrice'].forEach(id => document.getElementById(id).addEventListener('input', updateAIPreview));
+});
+</script>
+</body>
+</html>

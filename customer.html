@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flash Deals Near You — LAST BITE</title>
+<meta name="description" content="Find discounted surplus food near you. Flash sales from NGOs within 3km."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div><span class="logo-text" style="display:none;">LAST BITE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html" class="active">Flash Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="delivery.html">Delivery</a></li>
+    <li><a href="farmer.html">Farmer Portal</a></li>
+    <li><a href="impact.html">Analytics</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-orange animate-pulse">📍 Delhi NCR</span>
+    <button class="btn btn-primary btn-sm" onclick="requestNotif()">🔔 Enable Alerts</button>
+  </div>
+</nav>
+
+<!-- HERO STRIP -->
+<section style="padding:100px 0 40px;background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,0.12),transparent 60%);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div class="badge badge-orange mb-16 animate-pulse">⚡ LIVE FLASH SALES — Updated Every 30 Min</div>
+      <h1 style="font-family:'Poppins',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:12px;">
+        Fresh Food. <span class="title-orange">Deep Discounts.</span><br/><span class="title-green">Zero Waste.</span>
+      </h1>
+      <p style="color:#94a3b8;font-size:15px;max-width:500px;margin:0 auto;">NGO surplus food listed at 30-80% off. Claim fast — limited quantities, expiring soon!</p>
+    </div>
+
+    <!-- Filters -->
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+      <button class="btn btn-orange btn-sm filter-btn active" data-filter="all" onclick="applyFilter('all',this)">🍽️ All Deals</button>
+      <button class="btn btn-ghost btn-sm filter-btn" data-filter="flash" onclick="applyFilter('flash',this)">⚡ Flash Sale</button>
+      <button class="btn btn-ghost btn-sm filter-btn" data-filter="high" onclick="applyFilter('high',this)">🔥 50%+ Off</button>
+      <button class="btn btn-ghost btn-sm filter-btn" data-filter="near" onclick="applyFilter('near',this)">📍 &lt;2 km</button>
+    </div>
+
+    <!-- Live Stats Bar -->
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;">
+      <div class="card" style="padding:12px 20px;display:flex;gap:10px;align-items:center;">
+        <span style="font-size:20px;">⚡</span>
+        <div><div style="font-weight:700;" id="liveFlash">0</div><div style="font-size:11px;color:#94a3b8;">Flash Sales Live</div></div>
+      </div>
+      <div class="card" style="padding:12px 20px;display:flex;gap:10px;align-items:center;">
+        <span style="font-size:20px;">📦</span>
+        <div><div style="font-weight:700;" id="liveQty">0</div><div style="font-size:11px;color:#94a3b8;">Portions Available</div></div>
+      </div>
+      <div class="card" style="padding:12px 20px;display:flex;gap:10px;align-items:center;">
+        <span style="font-size:20px;">💰</span>
+        <div><div style="font-weight:700;color:#22c55e;" id="liveMax">0%</div><div style="font-size:11px;color:#94a3b8;">Max Discount</div></div>
+      </div>
+      <div class="card" style="padding:12px 20px;display:flex;gap:10px;align-items:center;">
+        <span style="font-size:20px;">📍</span>
+        <div><div style="font-weight:700;">2-3 km</div><div style="font-size:11px;color:#94a3b8;">Radius Coverage</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD GRID -->
+<section style="padding:0 0 80px;">
+  <div class="container">
+    <div class="flex-between mb-24">
+      <h2 style="font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;">
+        <span class="live-badge"><span class="live-dot"></span>LIVE DEALS</span>
+      </h2>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span style="font-size:13px;color:#94a3b8;">Sort:</span>
+        <select class="form-control" style="width:auto;padding:7px 12px;font-size:13px;" onchange="sortDeals(this.value)">
+          <option value="discount">Highest Discount</option>
+          <option value="expiry">Expiring Soonest</option>
+          <option value="price">Lowest Price</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-3" id="dealsGrid"></div>
+  </div>
+</section>
+
+<!-- MY ORDERS -->
+<section style="padding:0 0 80px;background:rgba(6,11,20,0.5);">
+  <div class="container">
+    <h2 style="font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">📋 My Claimed Deals</h2>
+    <div id="myOrdersGrid">
+      <div class="card text-center" style="padding:32px;">
+        <div style="font-size:36px;margin-bottom:10px;">🛍️</div>
+        <p style="color:#94a3b8;">No orders yet. Claim a flash deal above!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MY IMPACT STRIP -->
+<section style="padding:48px 0;background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(249,115,22,0.05));">
+  <div class="container">
+    <div style="text-align:center;">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:20px;">🌍 Your Personal Impact</h3>
+      <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+        <div class="stat-card" style="min-width:140px;"><span class="stat-icon">🍽️</span><div class="stat-value" id="myTotalMeals">0</div><div class="stat-label">Meals Saved</div></div>
+        <div class="stat-card" style="min-width:140px;"><span class="stat-icon">🌿</span><div class="stat-value orange" id="myTotalCo2">0 kg</div><div class="stat-label">CO₂ Prevented</div></div>
+        <div class="stat-card" style="min-width:140px;"><span class="stat-icon">💰</span><div class="stat-value gold" id="myTotalSaved">₹0</div><div class="stat-label">Money Saved</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLAIM MODAL -->
+<div class="modal-overlay hidden" id="claimModal">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div style="font-size:56px;margin-bottom:12px;" id="claimEmoji">🍛</div>
+      <h3 class="modal-title" id="claimTitle">Butter Chicken</h3>
+      <p class="modal-sub" id="claimNGO">Spice Garden</p>
+      <div style="display:flex;justify-content:center;gap:12px;align-items:center;margin-bottom:20px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:2rem;font-weight:800;color:#22c55e;" id="claimPrice">₹168</div>
+        <div style="text-decoration:line-through;color:#475569;" id="claimOriginal">₹280</div>
+        <span class="badge badge-orange" id="claimDiscount">40% OFF</span>
+      </div>
+      <div class="alert alert-green mb-16">
+        <span class="alert-icon">♻️</span>
+        <span>By claiming this, you'll help save <strong id="claimCo2">1.25 kg</strong> of CO₂!</span>
+      </div>
+      <button class="btn btn-orange btn-lg w-full" onclick="confirmClaim()">⚡ Claim This Deal!</button>
+      <button class="btn btn-ghost w-full mt-8" onclick="closeModal('claimModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- OTP MODAL -->
+<div class="modal-overlay hidden" id="otpClaimModal">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <h3 class="modal-title">Deal Claimed!</h3>
+      <p class="modal-sub">Show this OTP to the NGO at pickup</p>
+      <div class="otp-display" id="claimOTPDigits"></div>
+      <div class="alert alert-orange" style="margin:16px 0;">
+        <span class="alert-icon">⏰</span>
+        <span>Please pick up within <strong>45 minutes</strong> to keep the deal valid.</span>
+      </div>
+      <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px;margin-bottom:16px;">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:4px;">Pickup Address</div>
+        <div style="font-weight:700;" id="claimAddress">Spice Garden, Connaught Place</div>
+      </div>
+      <button class="btn btn-primary w-full" onclick="closeModal('otpClaimModal')">✅ Got it!</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+let currentClaimItem = null;
+let allDeals = [];
+
+function renderDeals(items) {
+  const grid = document.getElementById('dealsGrid');
+  if (!items.length) {
+    grid.innerHTML = '<div class="card text-center" style="grid-column:1/-1;padding:40px;"><div style="font-size:40px;">🕐</div><p style="color:#94a3b8;margin-top:10px;">No active flash deals right now. Check back soon!</p></div>';
+    return;
+  }
+  grid.innerHTML = items.map((item, idx) => {
+    const curPrice = getCurrentPrice(item);
+    const saved = item.originalPrice - curPrice;
+    const c = getExpiryCountdown(item);
+    const urgency = c.total < 1 ? 'red' : c.total < 2 ? 'orange' : 'green';
+    const distances = ['0.8 km','1.2 km','1.9 km','2.3 km','2.7 km'];
+    const dist = distances[idx % distances.length];
+    return `
+    <div class="food-card card-enter" style="animation-delay:${idx*0.08}s;">
+      <div class="food-card-emoji" style="position:relative;">
+        ${item.emoji||'🍽️'}
+        <div style="position:absolute;top:10px;left:10px;">
+          <span class="badge badge-orange">${item.discount}% OFF</span>
+        </div>
+        <div style="position:absolute;top:10px;right:10px;">
+          <span class="badge badge-${urgency}">${c.h}h ${c.m}m</span>
+        </div>
+      </div>
+      <div class="food-card-body">
+        <div class="flex-between mb-8">
+          <div class="food-card-name">${item.name}</div>
+          <span class="text-xs text-muted">📍 ${dist}</span>
+        </div>
+        <div class="food-card-NGO">🏪 ${item.NGO} · ${item.area}</div>
+        <div class="food-card-price-row">
+          <span class="price-current">₹${curPrice}</span>
+          <span class="price-original">₹${item.originalPrice}</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <span class="badge badge-green">💰 Save ₹${saved}</span>
+          <span class="badge badge-blue">📦 ${item.qty} left</span>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">Time Remaining</div>
+          <div class="countdown-box" id="cd-${item.id}"></div>
+        </div>
+        <button class="btn btn-orange w-full" onclick="openClaimModal('${item.id}')">⚡ Claim This Deal</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  items.forEach(item => {
+    const el = document.getElementById('cd-'+item.id);
+    if (el) startCountdown('cd-'+item.id, item.expiryHours, item.entryTime);
+  });
+}
+
+function applyFilter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.className = b.className.replace('btn-orange','btn-ghost'); });
+  btn.classList.add('active');
+  btn.className = btn.className.replace('btn-ghost','btn-orange');
+  let filtered = [...allDeals];
+  if (type === 'high') filtered = filtered.filter(i => i.discount >= 50);
+  else if (type === 'near') filtered = filtered.slice(0,3);
+  renderDeals(filtered);
+}
+
+function sortDeals(by) {
+  let sorted = [...allDeals];
+  if (by === 'discount') sorted.sort((a,b) => b.discount - a.discount);
+  else if (by === 'expiry') sorted.sort((a,b) => a.expiryHours - b.expiryHours);
+  else if (by === 'price') sorted.sort((a,b) => getCurrentPrice(a) - getCurrentPrice(b));
+  renderDeals(sorted);
+}
+
+function openClaimModal(id) {
+  const items = getFoodItems();
+  currentClaimItem = items.find(i => i.id === id);
+  if (!currentClaimItem) return;
+  const curPrice = getCurrentPrice(currentClaimItem);
+  const co2 = ((currentClaimItem.qty||1)*0.5*2.5).toFixed(2);
+  document.getElementById('claimEmoji').textContent = currentClaimItem.emoji||'🍽️';
+  document.getElementById('claimTitle').textContent = currentClaimItem.name;
+  document.getElementById('claimNGO').textContent = currentClaimItem.NGO;
+  document.getElementById('claimPrice').textContent = '₹'+curPrice;
+  document.getElementById('claimOriginal').textContent = '₹'+currentClaimItem.originalPrice;
+  document.getElementById('claimDiscount').textContent = currentClaimItem.discount+'% OFF';
+  document.getElementById('claimCo2').textContent = co2+' kg';
+  document.getElementById('claimModal').classList.remove('hidden');
+}
+
+function confirmClaim() {
+  if (!currentClaimItem) return;
+  const order = addOrder(currentClaimItem);
+  closeModal('claimModal');
+  document.getElementById('claimOTPDigits').innerHTML = order.otp.split('').map(d=>`<div class="otp-digit">${d}</div>`).join('');
+  document.getElementById('claimAddress').textContent = currentClaimItem.NGO+', '+currentClaimItem.area;
+  document.getElementById('otpClaimModal').classList.remove('hidden');
+  showToast('green','🎉 Deal Claimed!','Show your OTP at the NGO for pickup');
+  renderMyOrders();
+  updateMyImpact();
+}
+
+function renderMyOrders() {
+  const orders = getOrders();
+  const grid = document.getElementById('myOrdersGrid');
+  if (!orders.length) return;
+  grid.innerHTML = `<div class="grid-3">${orders.map(o => `
+    <div class="card" style="border-color:rgba(34,197,94,0.3);">
+      <div class="flex-between mb-12">
+        <div class="badge badge-green">✅ Claimed</div>
+        <div class="text-xs text-muted">${timeAgo(o.time)}</div>
+      </div>
+      <div style="font-weight:700;margin-bottom:4px;">${o.itemName}</div>
+      <div style="font-size:13px;color:#94a3b8;margin-bottom:10px;">🏪 ${o.NGO}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:800;color:#22c55e;">₹${o.price}</div>
+        <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);padding:4px 12px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:800;color:#22c55e;">${o.otp}</div>
+      </div>
+    </div>
+  `).join('')}</div>`;
+}
+
+function updateMyImpact() {
+  const orders = getOrders();
+  const meals = orders.length;
+  const co2 = (meals * 0.5 * 2.5).toFixed(1);
+  const saved = orders.reduce((s,o) => s+(o.price||0), 0);
+  document.getElementById('myTotalMeals').textContent = meals;
+  document.getElementById('myTotalCo2').textContent = co2+' kg';
+  document.getElementById('myTotalSaved').textContent = '₹'+saved;
+}
+
+function requestNotif() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(p => {
+      if (p === 'granted') { showToast('green','🔔 Alerts Enabled!','You will be notified of flash deals nearby'); new Notification('LAST BITE', {body:'Flash deal alerts enabled! 🍽️'}); }
+      else showToast('orange','🔕 Permission Denied','Enable notifications in browser settings');
+    });
+  } else showToast('orange','ℹ️ Not Supported','Push notifications require a supported browser');
+}
+
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+document.addEventListener('DOMContentLoaded', () => {
+  allDeals = getFoodItems().filter(i => i.status === 'FlashSale');
+  document.getElementById('liveFlash').textContent = allDeals.length;
+  document.getElementById('liveQty').textContent = allDeals.reduce((s,i)=>s+(i.qty||0),0);
+  document.getElementById('liveMax').textContent = Math.max(...allDeals.map(i=>i.discount),0)+'%';
+  renderDeals(allDeals);
+  renderMyOrders();
+  updateMyImpact();
+  setTimeout(() => showToast('orange','⚡ Flash Sale Alert!','Biryani 55% off — 1.2 km away. Limited stock!'), 2000);
+  // Refresh every 60s
+  setInterval(() => {
+    allDeals = getFoodItems().filter(i => i.status === 'FlashSale');
+    renderDeals(allDeals);
+  }, 60000);
+});
+</script>
+</body>
+</html>

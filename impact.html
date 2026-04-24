@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Impact Analytics — LAST BITE</title>
+<meta name="description" content="Real-time sustainability analytics — meals saved, CO2 reduced, families fed."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div><span class="logo-text" style="display:none;">LAST BITE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html">Flash Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="farmer.html">Farmer Portal</a></li>
+    <li><a href="impact.html" class="active">Analytics</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-green">📊 Live Dashboard</span>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <ul class="sidebar-menu">
+      <div class="sidebar-section-label">Analytics</div>
+      <li><a href="#overview" class="active" onclick="showImpactSection('overview',this)"><span class="menu-icon">📊</span>Overview</a></li>
+      <li><a href="#sustainability" onclick="showImpactSection('sustainability',this)"><span class="menu-icon">🌿</span>Sustainability</a></li>
+      <li><a href="#leaderboard" onclick="showImpactSection('leaderboard',this)"><span class="menu-icon">⭐</span>Leaderboard</a></li>
+      <li><a href="#sdg" onclick="showImpactSection('sdg',this)"><span class="menu-icon">🌍</span>SDG Goals</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- OVERVIEW -->
+    <div id="isec-overview">
+      <div class="page-header flex-between">
+        <div>
+          <h1 class="page-title">📊 Impact Analytics</h1>
+          <p class="page-sub">Real-time food waste prevention metrics across India</p>
+        </div>
+        <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+      </div>
+
+      <!-- Hero Stats -->
+      <div class="grid-4 mb-24" id="heroStats"></div>
+
+      <!-- Charts Row -->
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">🍽️ Meals Saved (Weekly)</h3>
+            <span class="badge badge-green">↑ 23% this week</span>
+          </div>
+          <canvas id="mealsChart" height="180"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">⚡ Flash Sale vs 💝 Donations</h3>
+            <span class="badge badge-blue">Distribution</span>
+          </div>
+          <canvas id="splitChart" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Impact Ticker -->
+      <div class="card mb-24" style="background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(249,115,22,0.05));">
+        <h3 class="card-title mb-16">⚡ Live Impact Feed</h3>
+        <div id="liveFeed" style="display:flex;flex-direction:column;gap:10px;max-height:280px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- CO2 Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🌿 CO₂ Prevention Breakdown</h3>
+          <span class="badge badge-green">Formula: 1 kg food = 2.5 kg CO₂</span>
+        </div>
+        <div class="grid-3">
+          <div style="text-align:center;padding:20px;background:rgba(34,197,94,0.06);border-radius:14px;">
+            <div style="font-size:2.2rem;font-weight:900;color:#22c55e;font-family:'Poppins',sans-serif;" id="co2Flash">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">kg CO₂ from Flash Sales</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:rgba(249,115,22,0.06);border-radius:14px;">
+            <div style="font-size:2.2rem;font-weight:900;color:#f97316;font-family:'Poppins',sans-serif;" id="co2Donate">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">kg CO₂ from Donations</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:rgba(251,191,36,0.06);border-radius:14px;">
+            <div style="font-size:2.2rem;font-weight:900;color:#fbbf24;font-family:'Poppins',sans-serif;" id="co2Total">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">Total kg CO₂ Prevented</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Farmer Impact -->
+      <div class="card mb-24" style="background:linear-gradient(135deg,rgba(77,124,15,0.08),rgba(120,53,15,0.05));border-color:rgba(77,124,15,0.3);">
+        <div class="card-header">
+          <h3 class="card-title" style="color:#a3e635;">🌾 Rural Agricultural Impact</h3>
+          <span class="badge" style="background:rgba(77,124,15,0.2);color:#bef264;">Farmer Module</span>
+        </div>
+        <div class="grid-3">
+          <div style="text-align:center;padding:16px;">
+            <div style="font-size:2rem;font-weight:900;color:#fcd34d;font-family:'Poppins',sans-serif;" id="agriWaste">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">kg Agri-Waste Prevented</div>
+          </div>
+          <div style="text-align:center;padding:16px;">
+            <div style="font-size:2rem;font-weight:900;color:#60a5fa;font-family:'Poppins',sans-serif;" id="agriVillages">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">Villages Connected</div>
+          </div>
+          <div style="text-align:center;padding:16px;">
+            <div style="font-size:2rem;font-weight:900;color:#a3e635;font-family:'Poppins',sans-serif;" id="agriIncome">0</div>
+            <div style="font-size:13px;color:#94a3b8;margin-top:6px;">₹ Farmer Income Generated</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUSTAINABILITY -->
+    <div id="isec-sustainability" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">🌿 Sustainability Report</h1>
+        <p class="page-sub">Environmental impact of LAST BITE platform</p>
+      </div>
+      <div class="grid-2 mb-24">
+        <div class="card">
+          <h3 class="card-title mb-16">📈 Monthly Progress</h3>
+          <canvas id="sustainChart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <h3 class="card-title mb-16">🌍 City-wise Breakdown</h3>
+          <div id="cityBreakdown"></div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(16,163,74,0.03));">
+        <h3 class="card-title mb-20">🔬 The Science Behind Our Impact</h3>
+        <div class="grid-3">
+          <div style="padding:16px;background:rgba(34,197,94,0.08);border-radius:14px;">
+            <div style="font-size:24px;margin-bottom:8px;">🌾</div>
+            <div style="font-weight:700;margin-bottom:6px;">Food Waste → Methane</div>
+            <div style="font-size:13px;color:#94a3b8;">When food decomposes in landfills, it produces methane — 25× more potent than CO₂ as a greenhouse gas.</div>
+          </div>
+          <div style="padding:16px;background:rgba(249,115,22,0.08);border-radius:14px;">
+            <div style="font-size:24px;margin-bottom:8px;">🔢</div>
+            <div style="font-weight:700;margin-bottom:6px;">Our Formula</div>
+            <div style="font-size:13px;color:#94a3b8;font-family:'Courier New',monospace;">1 kg food saved<br/>= 2.5 kg CO₂ prevented<br/>= 1 meal for a family</div>
+          </div>
+          <div style="padding:16px;background:rgba(59,130,246,0.08);border-radius:14px;">
+            <div style="font-size:24px;margin-bottom:8px;">🎯</div>
+            <div style="font-weight:700;margin-bottom:6px;">Our Goal</div>
+            <div style="font-size:13px;color:#94a3b8;">Reduce India's food waste from 40% → 0% using AI-driven surplus management by 2030.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div id="isec-leaderboard" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">⭐ Green Star Leaderboard</h1>
+        <p class="page-sub">Top NGOs ranked by sustainability score</p>
+      </div>
+      <div class="card mb-24">
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+          <span class="badge badge-gold">🏆 Rankings update every 24 hours</span>
+          <span class="badge badge-green">⭐ Based on meals saved + donations + zero waste</span>
+        </div>
+        <div id="fullLeaderboard"></div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(34,197,94,0.05));">
+        <h3 class="card-title mb-16">🏅 Green Star Tiers</h3>
+        <div class="grid-4">
+          <div style="text-align:center;padding:16px;background:rgba(34,197,94,0.1);border-radius:12px;">
+            <div style="font-size:28px;">🌿</div><div style="font-weight:700;color:#22c55e;margin-top:8px;">Platinum</div><div style="font-size:12px;color:#94a3b8;">800+ pts • ★★★★★</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:rgba(251,191,36,0.1);border-radius:12px;">
+            <div style="font-size:28px;">⭐</div><div style="font-weight:700;color:#fbbf24;margin-top:8px;">Gold</div><div style="font-size:12px;color:#94a3b8;">600-799 pts • ★★★★</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:rgba(148,163,184,0.1);border-radius:12px;">
+            <div style="font-size:28px;">🥈</div><div style="font-weight:700;color:#94a3b8;margin-top:8px;">Silver</div><div style="font-size:12px;color:#94a3b8;">400-599 pts • ★★★</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:rgba(249,115,22,0.1);border-radius:12px;">
+            <div style="font-size:28px;">🥉</div><div style="font-weight:700;color:#f97316;margin-top:8px;">Bronze</div><div style="font-size:12px;color:#94a3b8;">200-399 pts • ★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SDG GOALS -->
+    <div id="isec-sdg" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">🌍 SDG Alignment</h1>
+        <p class="page-sub">How LAST BITE contributes to UN Sustainable Development Goals</p>
+      </div>
+      <div class="grid-2 mb-24">
+        <div class="card" style="border-color:rgba(249,115,22,0.4);">
+          <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+            <div style="width:56px;height:56px;background:rgba(249,115,22,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🍽️</div>
+            <div><div class="badge badge-orange mb-8">SDG 2</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Zero Hunger</h3></div>
+          </div>
+          <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">Surplus food redirected to NGOs ensures meals reach families who need them most. Every donated meal fights malnutrition directly.</p>
+          <div style="margin-bottom:8px;font-size:13px;color:#94a3b8;">Progress toward target</div>
+          <div class="progress-bar"><div class="progress-fill orange" style="width:67%;"></div></div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:6px;">962 / 1,500 families target</div>
+        </div>
+        <div class="card" style="border-color:rgba(34,197,94,0.4);">
+          <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+            <div style="width:56px;height:56px;background:rgba(34,197,94,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">♻️</div>
+            <div><div class="badge badge-green mb-8">SDG 12</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Responsible Consumption</h3></div>
+          </div>
+          <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">Dynamic pricing and AI decision-making ensure food is consumed rather than wasted, making production chains more efficient.</p>
+          <div style="margin-bottom:8px;font-size:13px;color:#94a3b8;">Waste reduction achieved</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:82%;"></div></div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:6px;">3,847 / 5,000 meals target</div>
+        </div>
+        <div class="card" style="border-color:rgba(59,130,246,0.4);">
+          <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+            <div style="width:56px;height:56px;background:rgba(59,130,246,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🌡️</div>
+            <div><div class="badge badge-blue mb-8">SDG 13</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Climate Action</h3></div>
+          </div>
+          <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">Food waste contributes 8-10% of global greenhouse gases. Every kg we save prevents 2.5 kg of CO₂-equivalent from entering the atmosphere.</p>
+          <div style="margin-bottom:8px;font-size:13px;color:#94a3b8;">CO₂ Prevention</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:48%;"></div></div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:6px;">4,808 / 10,000 kg CO₂ target</div>
+        </div>
+        <div class="card" style="border-color:rgba(251,191,36,0.4);">
+          <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+            <div style="width:56px;height:56px;background:rgba(251,191,36,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🤝</div>
+            <div><div class="badge badge-gold mb-8">SDG 17</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Partnerships for Goals</h3></div>
+          </div>
+          <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">LAST BITE bridges NGOs, NGOs, and NGOs — building a tri-sector partnership to solve food insecurity through technology.</p>
+          <div style="margin-bottom:8px;font-size:13px;color:#94a3b8;">Partners Onboarded</div>
+          <div class="progress-bar"><div class="progress-fill gold" style="width:60%;"></div></div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:6px;">60 / 100 partners target</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+function showImpactSection(name, linkEl) {
+  document.querySelectorAll('[id^="isec-"]').forEach(s => s.classList.add('hidden'));
+  document.getElementById('isec-'+name).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (name === 'sustainability') initSustainChart();
+  if (name === 'leaderboard') renderFullLeaderboard();
+}
+
+function initOverview() {
+  const impact = getImpact();
+  document.getElementById('heroStats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon">🍽️</span><div class="stat-value" id="an1">0</div><div class="stat-label">Meals Saved</div></div>
+    <div class="stat-card"><span class="stat-icon">🌿</span><div class="stat-value orange" id="an2">0</div><div class="stat-label">kg CO₂ Prevented</div></div>
+    <div class="stat-card"><span class="stat-icon">👨‍👩‍👧</span><div class="stat-value gold" id="an3">0</div><div class="stat-label">Families Fed</div></div>
+    <div class="stat-card"><span class="stat-icon">💰</span><div class="stat-value" id="an4">0</div><div class="stat-label">₹ Revenue Recovered</div></div>
+  `;
+  setTimeout(() => {
+    animateNumber(document.getElementById('an1'), impact.mealsSaved);
+    animateNumber(document.getElementById('an2'), impact.co2Reduced);
+    animateNumber(document.getElementById('an3'), impact.familiesFed);
+    animateNumber(document.getElementById('an4'), impact.revenueRecovered, 1500, '₹');
+    animateNumber(document.getElementById('co2Flash'), Math.round(impact.co2Reduced * 0.6), 1500, '', ' kg');
+    animateNumber(document.getElementById('co2Donate'), Math.round(impact.co2Reduced * 0.4), 1500, '', ' kg');
+    animateNumber(document.getElementById('co2Total'), impact.co2Reduced, 1500, '', ' kg');
+    
+    // Farmer Metrics
+    animateNumber(document.getElementById('agriWaste'), impact.agriWastePrevented, 1500, '', ' kg');
+    animateNumber(document.getElementById('agriVillages'), impact.villagesConnected);
+    animateNumber(document.getElementById('agriIncome'), impact.farmerIncome, 1500, '₹');
+  }, 300);
+
+  // Meals Chart
+  const mCtx = document.getElementById('mealsChart').getContext('2d');
+  new Chart(mCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [{
+        label: 'Meals Saved',
+        data: [420, 580, 510, 670, 720, 890, 650],
+        backgroundColor: 'rgba(34,197,94,0.6)',
+        borderColor: '#22c55e',
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+      }
+    }
+  });
+
+  // Donut Chart
+  const sCtx = document.getElementById('splitChart').getContext('2d');
+  new Chart(sCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Flash Sales', 'NGO Donations'],
+      datasets: [{
+        data: [65, 35],
+        backgroundColor: ['rgba(249,115,22,0.8)', 'rgba(34,197,94,0.8)'],
+        borderColor: ['#f97316', '#22c55e'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#94a3b8', padding: 16 } }
+      },
+      cutout: '65%'
+    }
+  });
+
+  // Live Feed
+  const events = [
+    { icon:'⚡', msg:'Spice Garden listed Butter Chicken — Flash Sale 40% off', time:'Just now', color:'orange' },
+    { icon:'💝', msg:'Chennai House donated Masala Dosa to Akshaya Patra', time:'3 min ago', color:'green' },
+    { icon:'✅', msg:'Royal Dine OTP verified — 6 portions claimed', time:'8 min ago', color:'green' },
+    { icon:'🔔', msg:'2 NGOs within 1.5km notified of Biryani deal', time:'12 min ago', color:'blue' },
+    { icon:'⭐', msg:'Royal Dine achieved Platinum Green Star!', time:'25 min ago', color:'gold' },
+    { icon:'💝', msg:'Bombay Bites auto-donated 5 Veg Thalis to NGO', time:'31 min ago', color:'green' },
+  ];
+  const feed = document.getElementById('liveFeed');
+  events.forEach((e, i) => {
+    const el = document.createElement('div');
+    el.style.cssText = `display:flex;gap:12px;align-items:center;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:10px;border-left:3px solid var(--${e.color==='orange'?'orange-energy':e.color==='gold'?'gold-star':e.color==='blue'?'blue-info':'green-primary'});animation:slideInUp 0.4s ease ${i*0.1}s both;`;
+    el.innerHTML = `<span style="font-size:18px;">${e.icon}</span><div style="flex:1;"><div style="font-size:13px;">${e.msg}</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">${e.time}</div></div>`;
+    feed.appendChild(el);
+  });
+}
+
+function initSustainChart() {
+  const ctx = document.getElementById('sustainChart');
+  if (!ctx || ctx.dataset.init) return;
+  ctx.dataset.init = true;
+  new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      datasets: [
+        { label: 'kg Food Saved', data: [120,180,210,290,340,420,390,510,480,620,580,700], borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.4 },
+        { label: 'kg CO₂ Saved', data: [300,450,525,725,850,1050,975,1275,1200,1550,1450,1750], borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', fill: true, tension: 0.4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#94a3b8' } } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+      }
+    }
+  });
+
+  const cities = [
+    { name: 'Delhi NCR', meals: 1420, pct: 37, color: '#22c55e' },
+    { name: 'Mumbai', meals: 980, pct: 25, color: '#f97316' },
+    { name: 'Bangalore', meals: 760, pct: 20, color: '#3b82f6' },
+    { name: 'Chennai', meals: 450, pct: 12, color: '#fbbf24' },
+    { name: 'Others', meals: 237, pct: 6, color: '#94a3b8' },
+  ];
+  document.getElementById('cityBreakdown').innerHTML = cities.map(c => `
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:14px;font-weight:600;">${c.name}</span>
+        <span style="font-size:13px;color:#94a3b8;">${c.meals} meals · ${c.pct}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${c.pct*2.5}%;background:${c.color};"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderFullLeaderboard() {
+  const NGOs = getStorage(STORAGE_KEYS.NGOs) || [];
+  const sorted = [...NGOs].sort((a,b) => b.score - a.score);
+  const medals = ['🏆','🥈','🥉'];
+  document.getElementById('fullLeaderboard').innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Rank</th><th>NGO</th><th>City</th><th>Green Stars</th><th>Score</th><th>Meals Saved</th><th>Badge</th></tr></thead>
+        <tbody>${sorted.map((r,i) => {
+          const rating = getGreenStarRating(r.score);
+          return `<tr>
+            <td style="font-weight:700;font-size:16px;">${medals[i]||'#'+(i+1)}</td>
+            <td><div style="font-weight:700;">${r.emoji} ${r.name}</div></td>
+            <td style="color:#94a3b8;">${r.area}</td>
+            <td><span style="color:#fbbf24;">${renderStars(Math.floor(r.greenStars))}</span></td>
+            <td><span style="font-family:'Poppins',sans-serif;font-weight:800;color:#fbbf24;">${r.score}</span></td>
+            <td style="color:#22c55e;font-weight:700;">${r.meals}</td>
+            <td><span class="badge badge-gold">${rating.label}</span></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initOverview();
+  document.querySelectorAll('.sidebar-menu a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const sec = a.getAttribute('href').replace('#','');
+      showImpactSection(sec, a);
+    });
+  });
+  setTimeout(() => showToast('green','📊 Dashboard Live','All metrics updating in real-time'), 1000);
+});
+</script>
+</body>
+</html>

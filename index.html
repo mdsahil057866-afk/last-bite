@@ -1,0 +1,548 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LAST BITE — Zero Food Waste Platform for India</title>
+<meta name="description" content="LAST BITE uses AI to eliminate food waste in India. Flash sales, NGO donations, and Green Star ratings for NGOs."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div>
+    <span class="logo-text" style="display:none;">LAST BITE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how" class="active">How It Works</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="NGO.html">Find Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="delivery.html">Delivery</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="NGO.html" class="btn btn-secondary btn-sm">Find Deals 🔍</a>
+    <a href="NGO.html" class="btn btn-primary btn-sm">Join as NGO</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 30% 50%,rgba(34,197,94,0.12) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(249,115,22,0.08) 0%,transparent 60%),#060b14;">
+  <div class="particles" id="particles"></div>
+  <div class="container" style="position:relative;z-index:1;padding-top:80px;">
+    <div style="max-width:700px;">
+      <div class="badge badge-green animate-slide-up mb-16">
+        🌱 India's First AI-Powered Food Surplus Platform
+      </div>
+      <h1 class="animate-slide-up delay-1" style="font-family:'Poppins',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.15;margin-bottom:20px;">
+        <span class="title-orange">40% of India's Food</span><br/>
+        is Wasted Every Day.<br/>
+        <span class="title-green">We're Changing That.</span>
+      </h1>
+      <p class="animate-slide-up delay-2" style="font-size:1.1rem;color:#94a3b8;max-width:540px;margin-bottom:36px;line-height:1.7;">
+        LAST BITE connects NGOs with surplus food to nearby NGOs and NGOs using AI-powered Flash Sales and automated donation alerts — turning food waste into social impact.
+      </p>
+      <div class="animate-slide-up delay-3" style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="NGO.html" class="btn btn-orange btn-lg">⚡ Find Flash Deals Near Me</a>
+        <a href="NGO.html" class="btn btn-primary btn-lg">🍳 List Surplus Food</a>
+      </div>
+      <div class="animate-slide-up delay-4" style="display:flex;gap:24px;margin-top:36px;flex-wrap:wrap;">
+        <div><span class="text-green font-bold" style="font-size:1.4rem;font-family:'Poppins',sans-serif;">48+</span><div class="text-xs text-muted">NGOs Onboard</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div><span class="text-orange font-bold" style="font-size:1.4rem;font-family:'Poppins',sans-serif;">3,847</span><div class="text-xs text-muted">Meals Saved</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div><span class="text-green font-bold" style="font-size:1.4rem;font-family:'Poppins',sans-serif;">4,808 kg</span><div class="text-xs text-muted">CO₂ Prevented</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div><span class="text-gold font-bold" style="font-size:1.4rem;font-family:'Poppins',sans-serif;">12</span><div class="text-xs text-muted">NGO Partners</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Floating phone mockup -->
+  <div class="animate-float" style="position:absolute;right:5%;top:50%;transform:translateY(-50%);display:none;" id="heroPhone">
+    <div style="width:260px;height:520px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:40px;padding:20px;backdrop-filter:blur(20px);">
+      <div style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);border-radius:16px;padding:14px;margin-bottom:12px;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:6px;">⚡ FLASH SALE — 2.3 km away</div>
+        <div style="font-size:24px;margin-bottom:6px;">🍛</div>
+        <div style="font-weight:700;font-size:14px;">Butter Chicken</div>
+        <div style="font-size:11px;color:#94a3b8;">Spice Garden, CP</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+          <span style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:800;color:#22c55e;">₹168</span>
+          <span style="font-size:11px;color:#475569;text-decoration:line-through;">₹280</span>
+          <span style="background:#f97316;color:#fff;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;">40% OFF</span>
+        </div>
+        <div style="font-size:10px;color:#ef4444;margin-top:6px;">⏱ Expires in 1h 42m</div>
+      </div>
+      <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:10px;text-align:center;">
+        <div style="font-size:10px;color:#fbbf24;font-weight:700;">★ GREEN STAR LEADER</div>
+        <div style="font-size:12px;margin-top:4px;">Royal Dine — ★★★★★</div>
+        <div style="font-size:10px;color:#94a3b8;">450 meals saved this month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE IMPACT TICKER -->
+<section style="background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(249,115,22,0.05));border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:28px 0;overflow:hidden;">
+  <div style="display:flex;gap:0;animation:marquee 20s linear infinite;white-space:nowrap;" id="ticker"></div>
+</section>
+
+<!-- HOW IT WORKS - 7-Step AI Flow -->
+<section id="how" style="padding:100px 0;background:radial-gradient(ellipse at 50% 0%,rgba(34,197,94,0.07),transparent 70%);">
+  <div class="container">
+    <div class="text-center mb-24">
+      <div class="badge badge-blue mb-16">✨ 7-Step AI Flow</div>
+      <h2 class="section-title">How <span class="title-green">LAST BITE</span> Works</h2>
+      <p class="section-sub">From surplus food to zero waste — fully AI-automated</p>
+    </div>
+
+    <!-- STEPS GRID -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;max-width:960px;margin:0 auto 40px;">
+
+      <!-- Step 1 -->
+      <div class="hiw-card" style="--accent:#f97316;--accent-bg:rgba(249,115,22,0.12);--accent-border:rgba(249,115,22,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(249,115,22,0.15);border:1px solid rgba(249,115,22,0.4);">📤</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#f97316,#ea580c);box-shadow:0 4px 16px rgba(249,115,22,0.45);">1</div>
+        <h3 class="hiw-title">Food Upload</h3>
+        <p class="hiw-desc">NGO or event organizer uploads food type, quantity & expiry time. AI instantly receives the data.</p>
+        <div class="hiw-tag" style="background:rgba(249,115,22,0.12);color:#fed7aa;border:1px solid rgba(249,115,22,0.25);">🤖 AI Triggered</div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="hiw-card" style="--accent:#3b82f6;--accent-bg:rgba(59,130,246,0.12);--accent-border:rgba(59,130,246,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.4);">🔔</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 4px 16px rgba(59,130,246,0.45);">2</div>
+        <h3 class="hiw-title">Smart Notification</h3>
+        <p class="hiw-desc">AI sends instant alerts to nearby NGOs within 2–3 km radius: "Flash Food Alert — Fresh food near you!"</p>
+        <div class="hiw-tag" style="background:rgba(59,130,246,0.12);color:#bfdbfe;border:1px solid rgba(59,130,246,0.25);">📍 2–3 KM Radius</div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="hiw-card" style="--accent:#22c55e;--accent-bg:rgba(34,197,94,0.12);--accent-border:rgba(34,197,94,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);">🧠</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 16px rgba(34,197,94,0.45);">3</div>
+        <h3 class="hiw-title">AI NGO Matching</h3>
+        <p class="hiw-desc">AI ranks users by past orders, preferences & distance. Highest match score gets notified first.</p>
+        <div class="hiw-tag" style="background:rgba(34,197,94,0.12);color:#bbf7d0;border:1px solid rgba(34,197,94,0.25);">🎯 Real AI Matching</div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="hiw-card" style="--accent:#f59e0b;--accent-bg:rgba(245,158,11,0.12);--accent-border:rgba(245,158,11,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);">🛒</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 16px rgba(245,158,11,0.45);">4</div>
+        <h3 class="hiw-title">Order Placement</h3>
+        <p class="hiw-desc">NGO opens app, selects food at Flash Sale price, and places the order with one tap.</p>
+        <div class="hiw-tag" style="background:rgba(245,158,11,0.12);color:#fde68a;border:1px solid rgba(245,158,11,0.25);">⚡ One-Tap Order</div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="hiw-card" style="--accent:#8b5cf6;--accent-bg:rgba(139,92,246,0.12);--accent-border:rgba(139,92,246,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.4);">🛵</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);box-shadow:0 4px 16px rgba(139,92,246,0.45);">5</div>
+        <h3 class="hiw-title">Auto Assignment</h3>
+        <p class="hiw-desc">AI detects NGO location & assigns nearest delivery partner — or NGO picks up directly.</p>
+        <div class="hiw-tag" style="background:rgba(139,92,246,0.12);color:#ddd6fe;border:1px solid rgba(139,92,246,0.25);">📡 AI Tracking</div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="hiw-card" style="--accent:#06b6d4;--accent-bg:rgba(6,182,212,0.12);--accent-border:rgba(6,182,212,0.35);">
+        <div class="hiw-icon-wrap" style="background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.4);">🔐</div>
+        <div class="hiw-step-num" style="background:linear-gradient(135deg,#06b6d4,#0891b2);box-shadow:0 4px 16px rgba(6,182,212,0.45);">6</div>
+        <h3 class="hiw-title">OTP Verification</h3>
+        <p class="hiw-desc">NGO enters OTP at delivery. No fake orders. Secure delivery — both parties fully protected.</p>
+        <div class="hiw-tag" style="background:rgba(6,182,212,0.12);color:#a5f3fc;border:1px solid rgba(6,182,212,0.25);">🛡️ 100% Secure</div>
+      </div>
+
+    </div>
+
+    <!-- Step 7 — Special Full-Width Final Card -->
+    <div style="max-width:960px;margin:0 auto 40px;">
+      <div class="hiw-card hiw-final" style="--accent:#22c55e;grid-column:1/-1;display:flex;flex-direction:row;align-items:center;gap:28px;flex-wrap:wrap;">
+        <div class="hiw-icon-wrap" style="background:rgba(34,197,94,0.18);border:1px solid rgba(34,197,94,0.5);width:72px;height:72px;font-size:36px;flex-shrink:0;">💝</div>
+        <div style="flex:1;min-width:200px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <div class="hiw-step-num" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 20px rgba(34,197,94,0.5);position:relative;top:0;right:0;width:40px;height:40px;font-size:18px;">7</div>
+            <h3 class="hiw-title" style="margin:0;font-size:1.2rem;color:#22c55e;">NGO Donation (If Unsold)</h3>
+          </div>
+          <p class="hiw-desc" style="margin:0;font-size:15px;">If food does not sell within the flash sale window, the AI <strong style="color:#f1f5f9;">automatically alerts registered NGOs</strong> for free pickup. Zero food wasted — guaranteed.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;text-align:center;flex-shrink:0;">
+          <div class="hiw-tag" style="background:rgba(34,197,94,0.15);color:#bbf7d0;border:1px solid rgba(34,197,94,0.35);padding:8px 18px;font-size:13px;">🤝 Auto NGO Alert</div>
+          <div class="hiw-tag" style="background:rgba(249,115,22,0.12);color:#fed7aa;border:1px solid rgba(249,115,22,0.3);padding:8px 18px;font-size:13px;">♻️ Zero Waste</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Summary Banner -->
+    <div style="text-align:center;max-width:960px;margin:0 auto;">
+      <div style="display:inline-flex;align-items:center;gap:16px;padding:20px 36px;background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(249,115,22,0.08));border:1px solid rgba(255,255,255,0.1);border-radius:20px;flex-wrap:wrap;justify-content:center;">
+        <div style="font-size:28px;">🤖</div>
+        <div>
+          <div style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.05rem;color:#f1f5f9;">AI decides: <span style="color:#22c55e;">Sell</span> if there's demand · <span style="color:#f97316;">Donate</span> if there's need.</div>
+          <div style="font-size:12px;color:#64748b;margin-top:5px;">Zero food waste · Smart city · Real-time AI decisions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.hiw-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid var(--accent-border, rgba(255,255,255,0.1));
+  border-radius: 20px;
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+.hiw-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent, #22c55e), transparent);
+  opacity: 0.6;
+}
+.hiw-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px var(--accent-border, rgba(255,255,255,0.15));
+  border-color: var(--accent, #22c55e);
+}
+.hiw-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+.hiw-step-num {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  color: #fff;
+}
+.hiw-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #f1f5f9;
+  margin: 0;
+  padding-right: 40px;
+}
+.hiw-desc {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+.hiw-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 600;
+  width: fit-content;
+  margin-top: 4px;
+}
+.hiw-final {
+  background: linear-gradient(135deg, rgba(34,197,94,0.07), rgba(249,115,22,0.04));
+  border-color: rgba(34,197,94,0.35);
+  padding: 28px 32px;
+}
+.hiw-final::before {
+  background: linear-gradient(90deg, transparent, #22c55e, #f97316, transparent);
+}
+</style>
+
+<!-- AI CONDITIONS -->
+<section id="ai" style="padding:80px 0;background:radial-gradient(ellipse at center,rgba(34,197,94,0.05),transparent 70%);">
+  <div class="container">
+    <div class="text-center mb-24">
+      <div class="badge badge-blue mb-16">🤖 AI Logic</div>
+      <h2 class="section-title">Smart <span class="title-green">AI Decision</span> Engine</h2>
+      <p class="section-sub">Our AI checks every item and decides the best action</p>
+    </div>
+    <div class="grid-2" style="gap:24px;align-items:start;">
+      <div class="card" style="border-color:rgba(249,115,22,0.3);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(249,115,22,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">⚡</div>
+          <div><div class="badge badge-orange">Condition A</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;margin-top:6px;">Flash Sale</h3></div>
+        </div>
+        <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">If food is <strong style="color:#f1f5f9;">Fresh</strong> AND has more than 2 hours until closing → AI lists it in Flash Sale with dynamic discount.</p>
+        <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.2);border-radius:10px;padding:12px;font-size:13px;font-family:'Courier New',monospace;color:#fed7aa;">
+          IF category == "Fresh" AND expiry &gt; 2hrs<br/>
+          THEN action = FLASH_SALE<br/>
+          discount = 30-80% (dynamic)
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(34,197,94,0.3);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(34,197,94,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">💝</div>
+          <div><div class="badge badge-green">Condition B</div><h3 style="font-family:'Poppins',sans-serif;font-weight:700;margin-top:6px;">NGO Donation</h3></div>
+        </div>
+        <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">If food is <strong style="color:#f1f5f9;">Perishable</strong> OR less than 2 hours left → System auto-alerts local NGOs for free pickup.</p>
+        <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:12px;font-size:13px;font-family:'Courier New',monospace;color:#bbf7d0;">
+          IF category == "Perishable"<br/>
+          OR expiry &lt;= 2hrs<br/>
+          THEN action = DONATE → NGO Alert
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(59,130,246,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">📍</div>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Smart Geo-Matching</h3>
+        </div>
+        <p style="color:#94a3b8;font-size:14px;margin-bottom:16px;">System identifies NGOs within 2-3 KM radius and sends instant push notifications — ensuring fast pickup before food expires.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="badge badge-blue">📍 2-3 KM Radius</span>
+          <span class="badge badge-orange">🔔 Instant Push</span>
+          <span class="badge badge-green">⚡ Real-time</span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(249,115,22,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">📉</div>
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;">Dynamic Pricing</h3>
+        </div>
+        <p style="color:#94a3b8;font-size:14px;margin-bottom:12px;">Price auto-drops every 30 min as closing time approaches:</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">
+          <div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:8px;"><div style="font-size:11px;color:#94a3b8;">3h left</div><div style="font-weight:800;color:#22c55e;">30% off</div></div>
+          <div style="background:rgba(249,115,22,0.1);border-radius:8px;padding:8px;"><div style="font-size:11px;color:#94a3b8;">2h left</div><div style="font-weight:800;color:#f97316;">50% off</div></div>
+          <div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:8px;"><div style="font-size:11px;color:#94a3b8;">1h left</div><div style="font-weight:800;color:#ef4444;">70% off</div></div>
+          <div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:8px;"><div style="font-size:11px;color:#94a3b8;">Auto</div><div style="font-weight:800;color:#22c55e;">NGO 💝</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- FARMER INTEGRATION -->
+<section style="padding:80px 0;background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+  <div class="container">
+    <div class="grid-2" style="align-items:center;gap:40px;">
+      <div>
+        <div class="badge badge-green mb-16" style="background:rgba(77,124,15,0.2);color:#bef264;border-color:rgba(77,124,15,0.4);">🌾 Agriculture Sector Integration</div>
+        <h2 class="section-title">Connecting Villages to the <span style="color:#a3e635;">Digital Economy</span></h2>
+        <p style="color:#94a3b8;margin-bottom:24px;font-size:16px;line-height:1.6;">A massive amount of crops waste away because farmers cannot sell them in time. We've introduced a dedicated <strong>Farmer Module</strong> where farmers can list their unsold or extra harvest.</p>
+        <ul style="list-style:none;margin-bottom:32px;">
+          <li style="margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(34,197,94,0.1);color:#22c55e;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+            <div style="color:#cbd5e1;"><strong>Reduce Agricultural Waste:</strong> Directly connect unsold produce to buyers before it spoils.</div>
+          </li>
+          <li style="margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(249,115,22,0.1);color:#f97316;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+            <div style="color:#cbd5e1;"><strong>Increase Farmer Income:</strong> Bypass middlemen, allowing farmers to get a fair and direct price for their crops.</div>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(59,130,246,0.1);color:#3b82f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+            <div style="color:#cbd5e1;"><strong>B2B Direct Sourcing:</strong> NGOs can buy fresh local produce directly, lowering costs and improving quality.</div>
+          </li>
+        </ul>
+        <a href="farmer.html" class="btn" style="background:linear-gradient(135deg, #65a30d, #4d7c0f);color:#fff;box-shadow:0 4px 20px rgba(77,124,15,0.3);">Explore Farmer Portal 🚜</a>
+      </div>
+      <div style="position:relative;">
+        <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(163,230,53,0.2);border-radius:50%;filter:blur(40px);"></div>
+        <div class="card" style="border-color:rgba(77,124,15,0.3);background:linear-gradient(135deg,rgba(77,124,15,0.05),transparent);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div style="font-size:32px;">👨‍🌾</div>
+              <div><div style="font-weight:700;">Ramesh Kumar</div><div style="font-size:12px;color:#94a3b8;">Sonipat, Haryana</div></div>
+            </div>
+            <span class="badge" style="background:rgba(77,124,15,0.2);color:#bef264;">Verified Farmer</span>
+          </div>
+          <div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:16px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-weight:700;">Fresh Tomatoes</span>
+              <span style="color:#a3e635;font-weight:700;">₹15/kg</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;">
+              <span>Volume: 500 kg</span>
+              <span>Total Value: ₹7,500</span>
+            </div>
+          </div>
+          <button class="btn w-full" style="background:rgba(255,255,255,0.05);color:#fff;">Connect for Bulk Buy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT SECTION -->
+<section id="impact" style="padding:100px 0;background:linear-gradient(180deg,rgba(34,197,94,0.04),transparent);">
+  <div class="container">
+    <div class="text-center mb-24">
+      <div class="badge badge-green mb-16">📊 Real Impact</div>
+      <h2 class="section-title">Our <span class="title-green">Impact</span> So Far</h2>
+      <p class="section-sub">Every meal saved is a step toward Zero Hunger</p>
+    </div>
+    <div class="grid-4" id="impactGrid">
+      <div class="stat-card"><span class="stat-icon">🍽️</span><div class="stat-value" id="cntMeals">0</div><div class="stat-label">Meals Saved</div></div>
+      <div class="stat-card"><span class="stat-icon">🌍</span><div class="stat-value orange" id="cntCo2">0 kg</div><div class="stat-label">CO₂ Prevented</div></div>
+      <div class="stat-card"><span class="stat-icon">👨‍👩‍👧</span><div class="stat-value gold" id="cntFamilies">0</div><div class="stat-label">Families Fed</div></div>
+      <div class="stat-card"><span class="stat-icon">💰</span><div class="stat-value" id="cntRevenue">₹0</div><div class="stat-label">Revenue Recovered</div></div>
+    </div>
+    <div class="card mt-24" style="background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(249,115,22,0.04));">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div style="font-size:40px;">🌿</div>
+        <div style="flex:1;">
+          <h3 style="font-family:'Poppins',sans-serif;font-weight:700;margin-bottom:6px;">The CO₂ Formula</h3>
+          <p style="color:#94a3b8;font-size:14px;">When food decomposes in landfills, it releases methane — 25x more potent than CO₂. LAST BITE prevents this.</p>
+        </div>
+        <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px 20px;text-align:center;">
+          <div style="font-size:12px;color:#94a3b8;margin-bottom:4px;">Formula</div>
+          <div style="font-family:'Courier New',monospace;color:#22c55e;font-weight:700;">1 kg food waste<br/>= 2.5 kg CO₂</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GREEN STAR LEADERBOARD -->
+<section style="padding:90px 0;background:radial-gradient(ellipse at center,rgba(34,197,94,0.04),transparent 70%);">
+  <div class="container">
+    <div class="text-center mb-24">
+      <div class="badge badge-gold mb-16">⭐ Green Star Program</div>
+      <h2 class="section-title"><span class="title-orange">Green Star</span> Leaderboard</h2>
+      <p class="section-sub">NGOs ranked by their food waste prevention score</p>
+    </div>
+    <div id="leaderboard" class="grid-2" style="gap:18px;"></div>
+    <div class="text-center mt-32">
+      <a href="impact.html" class="btn btn-primary btn-lg" style="padding:16px 40px;font-size:16px;border-radius:50px;">📊 View Full Analytics</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:rgba(6,11,20,0.95);border-top:1px solid rgba(255,255,255,0.06);padding:48px 0 24px;">
+  <div class="container">
+    <div class="grid-3" style="margin-bottom:32px;">
+      <div>
+        <a href="index.html" class="nav-logo" style="margin-bottom:12px;display:flex;">
+          <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+          <div class="logo-icon" style="display:none;">🍽️</div><span class="logo-text" style="display:none;margin-left:10px;">LAST BITE</span>
+        </a>
+        <p style="color:#475569;font-size:13px;max-width:220px;margin-top:10px;">AI-powered platform to eliminate food waste in India. Zero Hunger. Zero Waste.</p>
+      </div>
+      <div>
+        <h4 style="font-weight:700;margin-bottom:14px;font-size:14px;">Quick Links</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="NGO.html" style="color:#94a3b8;font-size:13px;text-decoration:none;">⚡ Flash Deals</a>
+          <a href="NGO.html" style="color:#94a3b8;font-size:13px;text-decoration:none;">🍳 NGO Dashboard</a>
+          <a href="impact.html" style="color:#94a3b8;font-size:13px;text-decoration:none;">📊 Impact Analytics</a>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-weight:700;margin-bottom:14px;font-size:14px;">Contact</h4>
+        <p style="color:#94a3b8;font-size:13px;">📧 hello@lastbite.in</p>
+        <p style="color:#94a3b8;font-size:13px;margin-top:8px;">📱 +91 98765 43210</p>
+        <p style="color:#94a3b8;font-size:13px;margin-top:8px;">📍 Delhi, India</p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <p style="color:#475569;font-size:12px;">© 2024 LAST BITE. Built for Zero Hunger, Zero Waste India.</p>
+      <div style="display:flex;gap:12px;">
+        <span class="badge badge-green">🌱 SDG 2: Zero Hunger</span>
+        <span class="badge badge-blue">🌍 SDG 12: Responsible Consumption</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Hero Phone responsive
+  const phone = document.getElementById('heroPhone');
+  if (window.innerWidth > 900) phone.style.display = 'block';
+
+  // Particles
+  const pc = document.getElementById('particles');
+  for (let i=0; i<12; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `left:${Math.random()*100}%;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*6}s;opacity:${0.2+Math.random()*0.3};`;
+    pc.appendChild(p);
+  }
+
+  // Ticker
+  const items = ['🍽️ 3,847 Meals Saved Today', '🌿 4,808 kg CO₂ Prevented', '💝 12 NGO Partners Active', '⚡ 48 NGOs Onboard', '👨‍👩‍👧 962 Families Fed', '⭐ Royal Dine — Top Green Star', '🔔 New Flash Sale: Biryani 55% Off'];
+  const ticker = document.getElementById('ticker');
+  [...items, ...items].forEach(t => {
+    const el = document.createElement('div');
+    el.style.cssText = 'padding:0 40px;color:#94a3b8;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;';
+    el.innerHTML = t + '<span style="margin-left:40px;color:rgba(255,255,255,0.15)">|</span>';
+    ticker.appendChild(el);
+  });
+
+  // Animate impact numbers
+  const impact = getImpact();
+  setTimeout(() => {
+    animateNumber(document.getElementById('cntMeals'), impact.mealsSaved);
+    animateNumber(document.getElementById('cntCo2'), impact.co2Reduced, 1500, '', ' kg');
+    animateNumber(document.getElementById('cntFamilies'), impact.familiesFed);
+    animateNumber(document.getElementById('cntRevenue'), impact.revenueRecovered, 1500, '₹');
+  }, 500);
+
+  // Leaderboard
+  const NGOs = getStorage(STORAGE_KEYS.NGOs) || SAMPLE_NGOs;
+  const lb = document.getElementById('leaderboard');
+  NGOs.sort((a,b) => b.score - a.score).forEach((r, i) => {
+    const medal = i===0?'🏆':i===1?'🥈':i===2?'🥉':'🎖️';
+    const borderCol = i===0?'rgba(251,191,36,0.5)':'rgba(255,255,255,0.1)';
+    const scoreCol = i===0?'#fbbf24':i===1?'#22c55e':'#f97316';
+    lb.innerHTML += `
+      <div class="card" style="border-color:${borderCol};padding:20px 24px;transition:all 0.3s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:48px;height:48px;border-radius:14px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">${r.emoji}</div>
+            <div>
+              <div style="font-weight:700;font-size:15px;color:#f1f5f9;">${medal} ${r.name}</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">${r.area}</div>
+              <div style="color:#fbbf24;font-size:13px;margin-top:4px;letter-spacing:1px;">${renderStars(Math.floor(r.greenStars))}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:900;color:${scoreCol};">${r.score}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:1px;">Green Score</div>
+            <div style="font-size:12px;color:#22c55e;margin-top:4px;font-weight:600;">${r.meals} meals saved</div>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Show welcome toast
+  setTimeout(() => showToast('green', '🎉 Welcome to LAST BITE!', 'Explore Flash Deals near you or join as a NGO'), 1200);
+});
+</script>
+<style>
+@keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+</style>
+</body>
+</html>

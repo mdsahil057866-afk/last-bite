@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Event Food Rescue — LAST BITE</title>
+<meta name="description" content="List your event's surplus food. AI decides: Flash Sale or NGO Donation automatically."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<style>
+.case-card{border-radius:16px;padding:20px;text-align:center;transition:transform .2s;}
+.case-card:hover{transform:translateY(-4px);}
+.notif-box{border-radius:12px;padding:16px;margin-bottom:12px;font-size:13px;line-height:1.8;}
+.match-row{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;}
+.match-bar-wrap{flex:1;background:rgba(255,255,255,0.07);border-radius:100px;height:6px;}
+.match-bar{height:6px;border-radius:100px;background:linear-gradient(90deg,#22c55e,#f97316);}
+.ev-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;transition:all .25s;}
+.ev-card:hover{transform:translateY(-4px);border-color:rgba(249,115,22,0.35);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.ev-header{padding:20px;display:flex;gap:14px;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,0.06);}
+.ev-body{padding:16px;}
+.pitch-box{background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(249,115,22,0.06));border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;text-align:center;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html">Flash Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="events.html" class="active">Events</a></li>
+    <li><a href="delivery.html">Delivery</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-orange animate-pulse">🎉 3 Events Active</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="padding:100px 0 48px;background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,0.12),transparent 60%);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="badge badge-orange mb-16 animate-pulse">🎉 Event Food Rescue — AI-Powered</div>
+      <h1 style="font-family:'Poppins',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:900;margin-bottom:16px;">
+        Party Surplus Food?<br/><span class="title-green">AI Will Handle It.</span>
+      </h1>
+      <p style="color:#94a3b8;font-size:16px;max-width:580px;margin:0 auto 32px;line-height:1.7;">
+        Wedding, corporate event, birthday party — jab bhi khana bachta hai, list karo.<br/>
+        AI automatically decide karega: <strong style="color:#f97316;">Flash Sale</strong> if demand high &nbsp;·&nbsp; <strong style="color:#22c55e;">NGO Donation</strong> if need greater.
+      </p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <div class="case-card" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);max-width:220px;">
+          <div style="font-size:32px;margin-bottom:8px;">📊</div>
+          <div style="font-weight:700;color:#f97316;margin-bottom:6px;">Case 1: High Demand</div>
+          <div style="font-size:12px;color:#94a3b8;">Flash Sale → Nearby NGOs notified → Revenue recovered</div>
+        </div>
+        <div class="case-card" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);max-width:220px;">
+          <div style="font-size:32px;margin-bottom:8px;">❤️</div>
+          <div style="font-weight:700;color:#22c55e;margin-bottom:6px;">Case 2: Low Demand</div>
+          <div style="font-size:12px;color:#94a3b8;">NGO auto-alerted → Free pickup arranged → Social impact</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM + PREVIEW -->
+<section style="padding:0 0 80px;">
+  <div class="container">
+    <div class="grid-2" style="gap:28px;align-items:start;">
+
+      <!-- FORM -->
+      <div class="card" style="border-color:rgba(249,115,22,0.3);">
+        <h3 class="card-title mb-16">📝 List Your Event's Surplus Food</h3>
+        <div class="form-group">
+          <label class="form-label">Event Title *</label>
+          <input id="evTitle" class="form-control" placeholder="e.g., Sharma Wedding, TechCorp Annual Meet"/>
+        </div>
+        <div class="grid-2 gap-16">
+          <div class="form-group">
+            <label class="form-label">Event Type *</label>
+            <select id="evType" class="form-control">
+              <option value="Wedding">💒 Wedding</option>
+              <option value="Corporate">🏢 Corporate Event</option>
+              <option value="Birthday">🎂 Birthday Party</option>
+              <option value="Religious">🙏 Religious Ceremony</option>
+              <option value="Other">🎉 Other Party</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Organizer Name *</label>
+            <input id="evOrganizer" class="form-control" placeholder="Your name"/>
+          </div>
+        </div>
+        <div class="grid-2 gap-16">
+          <div class="form-group">
+            <label class="form-label">Food Portions (Approx.) *</label>
+            <input id="evFood" class="form-control" type="number" min="1" placeholder="e.g., 200"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Hours Until Expiry *</label>
+            <select id="evHours" class="form-control" onchange="updateAIPreview()">
+              <option value="4">4 hours</option>
+              <option value="3">3 hours</option>
+              <option value="2">2 hours</option>
+              <option value="1">1 hour</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Food Description</label>
+          <input id="evFoodDesc" class="form-control" placeholder="e.g., Biryani, Paneer dishes, Sweets, Desserts"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📍 Location / Area *</label>
+          <input id="evArea" class="form-control" placeholder="e.g., South Delhi, Gurgaon Cyber City"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contact Number *</label>
+          <input id="evContact" class="form-control" type="tel" placeholder="+91 98765 43210"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">AI Listing Preference</label>
+          <select id="evListType" class="form-control" onchange="updateAIPreview()">
+            <option value="Auto">🤖 Let AI Decide (Recommended)</option>
+            <option value="Flash">⚡ Flash Sale Only</option>
+            <option value="Donate">❤️ NGO Donation Only</option>
+          </select>
+        </div>
+        <button class="btn btn-orange btn-lg w-full" onclick="submitEvent()">🚀 Submit — AI Will Handle Everything</button>
+      </div>
+
+      <!-- AI PREVIEW + TEMPLATES -->
+      <div>
+        <!-- AI Decision Preview -->
+        <div class="card mb-20" style="border-color:rgba(59,130,246,0.3);">
+          <div class="card-header">
+            <h3 class="card-title">🤖 AI Decision Preview</h3>
+            <span class="badge badge-blue animate-pulse">Live</span>
+          </div>
+          <div id="evAIContent" style="text-align:center;padding:24px;color:#94a3b8;">
+            <div style="font-size:44px;margin-bottom:12px;">🤖</div>
+            <p>Fill in the form to see AI recommendation</p>
+          </div>
+        </div>
+
+        <!-- Notification Templates -->
+        <div class="card mb-20" style="border-color:rgba(255,255,255,0.08);">
+          <div class="card-header">
+            <h3 class="card-title">🔔 Notification Templates</h3>
+            <span class="badge badge-green">Auto-Sent</span>
+          </div>
+          <div class="notif-box" style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);">
+            <div style="font-size:11px;color:#f97316;font-weight:700;margin-bottom:8px;">📢 FOR NGOs — High Demand (Flash Sale)</div>
+            🔥 <strong>Flash Food Alert!</strong><br/>
+            Aaj ke event se fresh food available hai near you 🍽️<br/>
+            Limited time deal – grab before it's gone!<br/>
+            📍 Location: <span style="color:#f97316;">[Area]</span><br/>
+            ⏳ Hurry up!
+          </div>
+          <div class="notif-box" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);">
+            <div style="font-size:11px;color:#22c55e;font-weight:700;margin-bottom:8px;">🤝 FOR NGOs — Low Demand (Donation)</div>
+            ❤️ <strong>Food Donation Alert!</strong><br/>
+            Fresh surplus food available for donation near your area.<br/>
+            Pickup required within limited time.<br/>
+            📍 Location: <span style="color:#22c55e;">[Area]</span><br/>
+            🙏 Help us reduce food waste.
+          </div>
+        </div>
+
+        <!-- Pitch Line -->
+        <div class="pitch-box">
+          <div style="font-size:28px;margin-bottom:10px;">💡</div>
+          <div style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.05rem;color:#f1f5f9;margin-bottom:6px;">
+            "AI decides: Sell if there's demand,<br/>Donate if there's need."
+          </div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:10px;">
+            ♻️ Zero food waste &nbsp;·&nbsp; 🏙️ Smart city &nbsp;·&nbsp; ⚡ Real-time decisions
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE EVENTS -->
+    <div style="margin-top:64px;">
+      <div class="flex-between mb-24">
+        <div>
+          <h2 style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;">🎉 Active Event Listings</h2>
+          <p style="font-size:13px;color:#94a3b8;margin-top:4px;">Events with surplus food available right now</p>
+        </div>
+        <span class="badge badge-orange animate-pulse" id="evActiveCount">0 Active</span>
+      </div>
+      <div class="grid-3" id="eventsGrid"></div>
+    </div>
+
+    <!-- AI USER MATCHING -->
+    <div class="card mt-24" style="border-color:rgba(59,130,246,0.3);">
+      <div class="card-header">
+        <h3 class="card-title">🤖 AI NGO Matching — Who Gets Notified First</h3>
+        <span class="badge badge-blue">2–3 KM Radius</span>
+      </div>
+      <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;">AI ranks nearby NGOs by purchase history, food preferences, and proximity. Highest match scores get priority notifications.</p>
+      <div id="aiMatchGrid" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay hidden" id="evModal">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div style="font-size:56px;margin-bottom:12px;" id="evModalIcon">🎉</div>
+      <h3 class="modal-title">Event Food Listed!</h3>
+      <p class="modal-sub" id="evModalSub">AI is analyzing demand and notifying nearby NGOs.</p>
+      <div id="evModalDecision" style="margin:16px 0;padding:14px;border-radius:12px;"></div>
+      <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px;margin-bottom:16px;">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">📊 AI Notifying Nearby:</div>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <div style="text-align:center;"><div style="font-size:1.4rem;font-weight:800;font-family:'Poppins',sans-serif;color:#22c55e;" id="evModalUsers">0</div><div style="font-size:11px;color:#94a3b8;">NGOs</div></div>
+          <div style="text-align:center;"><div style="font-size:1.4rem;font-weight:800;font-family:'Poppins',sans-serif;color:#f97316;" id="evModalNGOs">0</div><div style="font-size:11px;color:#94a3b8;">NGOs</div></div>
+          <div style="text-align:center;"><div style="font-size:1.4rem;font-weight:800;font-family:'Poppins',sans-serif;color:#3b82f6;" id="evModalRadius">3 km</div><div style="font-size:11px;color:#94a3b8;">Radius</div></div>
+        </div>
+      </div>
+      <button class="btn btn-primary w-full" onclick="document.getElementById('evModal').classList.add('hidden')">✅ Got it!</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+const typeEmoji = { Wedding:'💒', Corporate:'🏢', Birthday:'🎂', Religious:'🙏', Other:'🎉' };
+
+function updateAIPreview() {
+  const hours = parseInt(document.getElementById('evHours').value);
+  const pref = document.getElementById('evListType').value;
+  let action, color, icon, msg, discount;
+
+  if (pref === 'Flash') { action = 'FLASH_SALE'; }
+  else if (pref === 'Donate') { action = 'DONATE'; }
+  else { action = hours > 2 ? 'FLASH_SALE' : 'DONATE'; }
+
+  if (action === 'FLASH_SALE') {
+    discount = AIEngine.getDynamicDiscount(hours);
+    color = 'orange'; icon = '⚡';
+    msg = `High demand detected! Flash Sale at <strong style="color:#f97316;">${discount}% off</strong> — nearby NGOs will be notified instantly.`;
+  } else {
+    color = 'green'; icon = '❤️';
+    msg = `Low time remaining. AI will <strong style="color:#22c55e;">alert nearby NGOs</strong> for free pickup — maximizing social impact.`;
+  }
+
+  document.getElementById('evAIContent').innerHTML = `
+    <div style="display:flex;gap:14px;align-items:center;padding:16px;background:rgba(${action==='FLASH_SALE'?'249,115,22':'34,197,94'},0.08);border:1px solid rgba(${action==='FLASH_SALE'?'249,115,22':'34,197,94'},0.2);border-radius:12px;margin-bottom:16px;text-align:left;">
+      <div style="font-size:36px;">${icon}</div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">AI RECOMMENDATION</div>
+        <div style="font-weight:700;color:${action==='FLASH_SALE'?'#f97316':'#22c55e'};font-size:1rem;">${action==='FLASH_SALE'?'⚡ Flash Sale':'❤️ NGO Donation'}</div>
+        <div style="font-size:12px;color:#cbd5e1;margin-top:4px;">${msg}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;">
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;">
+        <div style="font-size:18px;font-weight:800;font-family:'Poppins',sans-serif;color:#22c55e;">~${Math.floor(20+Math.random()*40)}</div>
+        <div style="font-size:11px;color:#94a3b8;">NGOs Notified</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;">
+        <div style="font-size:18px;font-weight:800;font-family:'Poppins',sans-serif;color:#f97316;">3 km</div>
+        <div style="font-size:11px;color:#94a3b8;">Radius</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;">
+        <div style="font-size:18px;font-weight:800;font-family:'Poppins',sans-serif;color:#3b82f6;">${hours}h</div>
+        <div style="font-size:11px;color:#94a3b8;">Time Left</div>
+      </div>
+    </div>`;
+}
+
+function submitEvent() {
+  const title = document.getElementById('evTitle').value.trim();
+  const type = document.getElementById('evType').value;
+  const organizer = document.getElementById('evOrganizer').value.trim();
+  const food = parseInt(document.getElementById('evFood').value);
+  const hours = parseInt(document.getElementById('evHours').value);
+  const foodDesc = document.getElementById('evFoodDesc').value.trim();
+  const area = document.getElementById('evArea').value.trim();
+  const contact = document.getElementById('evContact').value.trim();
+  const pref = document.getElementById('evListType').value;
+
+  if (!title || !organizer || !food || !area || !contact) {
+    showToast('red', '❌ Missing Fields', 'Please fill all required fields'); return;
+  }
+
+  const action = pref === 'Auto' ? (hours > 2 ? 'FLASH_SALE' : 'DONATE') : (pref === 'Flash' ? 'FLASH_SALE' : 'DONATE');
+  const ev = { title, type, organizer, food, foodDesc, area, contact, hoursLeft: hours, listingType: pref, emoji: typeEmoji[type] || '🎉' };
+  addEvent(ev);
+
+  // Show modal
+  const isFlash = action === 'FLASH_SALE';
+  document.getElementById('evModalIcon').textContent = isFlash ? '⚡' : '❤️';
+  document.getElementById('evModalSub').textContent = isFlash ? 'Flash Sale activated! Nearby NGOs are being notified.' : 'NGOs are being alerted for free pickup.';
+  document.getElementById('evModalDecision').innerHTML = `<div style="background:rgba(${isFlash?'249,115,22':'34,197,94'},0.1);border:1px solid rgba(${isFlash?'249,115,22':'34,197,94'},0.3);border-radius:10px;padding:12px;font-size:14px;color:${isFlash?'#f97316':'#22c55e'};font-weight:700;">${isFlash?'⚡ Flash Sale Activated':'❤️ NGO Alert Sent'}</div>`;
+  document.getElementById('evModalUsers').textContent = isFlash ? Math.floor(20 + Math.random()*40) : 0;
+  document.getElementById('evModalNGOs').textContent = isFlash ? 0 : Math.floor(2 + Math.random()*4);
+  document.getElementById('evModal').classList.remove('hidden');
+
+  // Reset form
+  ['evTitle','evOrganizer','evFood','evFoodDesc','evArea','evContact'].forEach(id => document.getElementById(id).value = '');
+  renderEvents();
+}
+
+function renderEvents() {
+  const events = getEvents();
+  const active = events.filter(e => e.status === 'Active');
+  document.getElementById('evActiveCount').textContent = active.length + ' Active';
+  const grid = document.getElementById('eventsGrid');
+  if (!active.length) {
+    grid.innerHTML = '<div class="card text-center" style="grid-column:1/-1;padding:40px;"><div style="font-size:40px;">🎉</div><p style="color:#94a3b8;margin-top:10px;">No active events yet. Be the first to list!</p></div>';
+    return;
+  }
+  grid.innerHTML = active.map(ev => {
+    const isFlash = ev.listingType === 'Flash' || (ev.listingType === 'Auto' && ev.hoursLeft > 2);
+    const isDonate = ev.listingType === 'Donate' || (ev.listingType === 'Auto' && ev.hoursLeft <= 2);
+    return `
+    <div class="ev-card">
+      <div class="ev-header">
+        <div style="font-size:36px;">${ev.emoji||'🎉'}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:15px;margin-bottom:4px;">${ev.title}</div>
+          <div style="font-size:12px;color:#94a3b8;">${ev.type} · ${ev.organizer}</div>
+          <div style="margin-top:8px;">
+            ${isFlash ? '<span class="badge badge-orange">⚡ Flash Sale</span>' : ''}
+            ${isDonate ? '<span class="badge badge-green">❤️ NGO Donation</span>' : ''}
+          </div>
+        </div>
+      </div>
+      <div class="ev-body">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;">
+          <span style="color:#94a3b8;">📦 ${ev.food} portions</span>
+          <span style="color:#f97316;">⏱ ${ev.hoursLeft}h left</span>
+        </div>
+        ${ev.foodDesc ? `<div style="font-size:12px;color:#94a3b8;margin-bottom:10px;">🍽️ ${ev.foodDesc}</div>` : ''}
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:12px;">📍 ${ev.area}</div>
+        <button class="btn btn-sm w-full" style="background:rgba(255,255,255,0.05);" onclick="showToast('green','📞 Contact Shared','Organizer: ${ev.contact}')">📞 Contact Organizer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAIMatching() {
+  const users = getAIUserMatching();
+  const grid = document.getElementById('aiMatchGrid');
+  grid.innerHTML = users.map(u => `
+    <div class="match-row">
+      <div style="font-size:24px;">${u.avatar}</div>
+      <div style="min-width:70px;font-weight:700;font-size:13px;">${u.name}</div>
+      <div class="match-bar-wrap">
+        <div class="match-bar" style="width:${u.match}%;"></div>
+      </div>
+      <div style="min-width:40px;font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;color:${u.match>80?'#22c55e':u.match>65?'#f97316':'#94a3b8'};">${u.match}%</div>
+      <div style="min-width:60px;font-size:11px;color:#94a3b8;">${u.distance}</div>
+      <div style="min-width:28px;">${u.notified ? '<span class="badge badge-green" style="font-size:10px;">✓ Sent</span>' : '<span class="badge" style="font-size:10px;background:rgba(255,255,255,0.05);">Queued</span>'}</div>
+      <div style="font-size:11px;color:#94a3b8;min-width:130px;">${u.reason}</div>
+    </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderEvents();
+  renderAIMatching();
+  updateAIPreview();
+  ['evHours','evListType'].forEach(id => document.getElementById(id).addEventListener('change', updateAIPreview));
+  setTimeout(() => showToast('orange', '🔥 Flash Alert!', 'TechCorp event food available — 2 km away'), 2000);
+});
+</script>
+</body>
+</html>

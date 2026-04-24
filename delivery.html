@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Delivery Partner Dashboard — LAST BITE</title>
+<meta name="description" content="Delivery partner dashboard. Accept orders, track deliveries, earn rewards."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<style>
+.status-toggle{display:flex;gap:0;border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;width:fit-content;}
+.status-btn{padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:#94a3b8;transition:all .2s;}
+.status-btn.active-online{background:#22c55e;color:#000;}
+.status-btn.active-busy{background:#f97316;color:#fff;}
+.status-btn.active-offline{background:#475569;color:#fff;}
+.order-card-active{background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(249,115,22,0.04));border:2px solid rgba(34,197,94,0.4);border-radius:16px;padding:24px;position:relative;}
+.order-card-active::before{content:'● LIVE';position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;color:#22c55e;animation:pulse 1.5s infinite;}
+.map-visual{background:radial-gradient(ellipse at 50% 50%,rgba(34,197,94,0.06) 0%,transparent 70%),rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px;text-align:center;position:relative;overflow:hidden;min-height:200px;}
+.radius-ring{position:absolute;border-radius:50%;border:1px dashed;transform:translate(-50%,-50%);top:50%;left:50%;}
+.partner-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 4px rgba(34,197,94,0.2);}
+.delivery-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#f97316;box-shadow:0 0 0 3px rgba(249,115,22,0.2);}
+.step-row{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);margin-bottom:10px;}
+.step-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.earn-card{background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(249,115,22,0.06));border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:16px;text-align:center;}
+.history-row{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05);}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon">🍽️</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html">Flash Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="delivery.html" class="active">Delivery</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-green animate-pulse" id="navStatus">🟢 Online</span>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div style="text-align:center;padding:0 8px 20px;">
+      <div style="font-size:48px;margin-bottom:8px;">🏍️</div>
+      <div style="font-weight:700;font-size:16px;" id="partnerName">Arjun Sharma</div>
+      <div style="font-size:12px;color:#94a3b8;" id="partnerArea">Connaught Place, Delhi</div>
+      <div style="margin-top:10px;">
+        <span style="color:#fbbf24;font-size:14px;">★</span>
+        <span style="font-weight:700;" id="partnerRating">4.8</span>
+        <span style="font-size:11px;color:#94a3b8;margin-left:4px;" id="partnerDeliveries">234 deliveries</span>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="status-toggle" id="statusToggle">
+          <button class="status-btn active-online" onclick="setStatus('Online')">Online</button>
+          <button class="status-btn" onclick="setStatus('Busy')">Busy</button>
+          <button class="status-btn" onclick="setStatus('Offline')">Offline</button>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <ul class="sidebar-menu">
+      <div class="sidebar-section-label">Dashboard</div>
+      <li><a href="#dash" class="active" onclick="showSec('dash',this)"><span class="menu-icon">📊</span>Overview</a></li>
+      <li><a href="#active" onclick="showSec('active',this)"><span class="menu-icon">⚡</span>Active Order</a></li>
+      <li><a href="#queue" onclick="showSec('queue',this)"><span class="menu-icon">📋</span>Order Queue</a></li>
+      <li><a href="#earnings" onclick="showSec('earnings',this)"><span class="menu-icon">💰</span>Earnings</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- OVERVIEW -->
+    <div id="sec-dash">
+      <div class="page-header flex-between">
+        <div>
+          <h1 class="page-title">Delivery Dashboard</h1>
+          <p class="page-sub">AI-assigned orders in your area</p>
+        </div>
+        <span class="badge badge-green animate-pulse" id="liveStatusBadge">🟢 Online — Ready for Orders</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4 mb-24" id="dashStats"></div>
+
+      <!-- Map Visual -->
+      <div class="card mb-24">
+        <div class="card-header">
+          <h3 class="card-title">📍 Live Coverage Map</h3>
+          <span class="badge badge-blue">3 KM Radius</span>
+        </div>
+        <div class="map-visual">
+          <div class="radius-ring" style="width:180px;height:180px;border-color:rgba(34,197,94,0.15);"></div>
+          <div class="radius-ring" style="width:120px;height:120px;border-color:rgba(34,197,94,0.25);"></div>
+          <div class="radius-ring" style="width:60px;height:60px;border-color:rgba(34,197,94,0.4);"></div>
+          <div class="partner-dot animate-pulse"></div>
+          <div class="delivery-dot" style="top:35%;left:60%;" title="Order 1"></div>
+          <div class="delivery-dot" style="top:65%;left:35%;" title="Order 2"></div>
+          <div class="delivery-dot" style="top:42%;left:28%;" title="Order 3"></div>
+          <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:12px;color:#94a3b8;">
+            🟢 You &nbsp;·&nbsp; 🟠 Orders nearby
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Assignment Info -->
+      <div class="card" style="background:linear-gradient(135deg,rgba(59,130,246,0.06),transparent);">
+        <div class="card-header">
+          <h3 class="card-title">🤖 How AI Assigns Orders</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="step-row">
+            <div class="step-circle" style="background:rgba(249,115,22,0.15);">📍</div>
+            <div><div style="font-weight:600;font-size:14px;">Geo-Detection</div><div style="font-size:12px;color:#94a3b8;">AI detects your live location and maps you to nearby orders</div></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle" style="background:rgba(34,197,94,0.15);">🤖</div>
+            <div><div style="font-weight:600;font-size:14px;">Smart Matching</div><div style="font-size:12px;color:#94a3b8;">Nearest available partner gets assigned first — reducing delivery time</div></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle" style="background:rgba(251,191,36,0.15);">🔐</div>
+            <div><div style="font-weight:600;font-size:14px;">OTP Confirmation</div><div style="font-size:12px;color:#94a3b8;">NGO shows OTP → you confirm → delivery marked complete</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE ORDER -->
+    <div id="sec-active" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">⚡ Active Order</h1>
+        <p class="page-sub">Your current assigned delivery</p>
+      </div>
+      <div id="activeOrderContent"></div>
+    </div>
+
+    <!-- ORDER QUEUE -->
+    <div id="sec-queue" class="hidden">
+      <div class="page-header flex-between">
+        <div><h1 class="page-title">📋 Order Queue</h1><p class="page-sub">AI-assigned orders waiting for pickup</p></div>
+        <span class="badge badge-orange animate-pulse" id="queueCount">0 Pending</span>
+      </div>
+      <div id="orderQueueGrid" class="grid-2" style="gap:16px;"></div>
+    </div>
+
+    <!-- EARNINGS -->
+    <div id="sec-earnings" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">💰 My Earnings</h1>
+        <p class="page-sub">Total earnings from food rescue deliveries</p>
+      </div>
+      <div class="grid-3 mb-24" id="earningsStats"></div>
+      <div class="card">
+        <h3 class="card-title mb-16">📅 Recent Deliveries</h3>
+        <div id="earningsHistory"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- OTP CONFIRM MODAL -->
+<div class="modal-overlay hidden" id="otpDeliveryModal">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+      <h3 class="modal-title">Confirm Delivery</h3>
+      <p class="modal-sub">Enter the OTP shown by the NGO to complete delivery</p>
+      <div class="otp-display" id="delivOTPDisplay"></div>
+      <div style="font-size:12px;color:#94a3b8;margin:12px 0 20px;">Order: <strong id="delivOrderName"></strong></div>
+      <div class="form-group">
+        <input class="form-control" id="delivOTPInput" placeholder="Enter 4-digit OTP from NGO" maxlength="4" type="number"/>
+      </div>
+      <button class="btn btn-primary w-full" onclick="confirmDelivery()">✅ Confirm Delivery</button>
+      <button class="btn btn-ghost w-full mt-8" onclick="document.getElementById('otpDeliveryModal').classList.add('hidden')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/app.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/pricing.js"></script>
+<script>
+let currentPartner = null;
+let currentDeliveryOTP = '';
+let currentDeliveryOrder = null;
+
+const SAMPLE_QUEUE = [
+  { id:'q1', item:'Butter Chicken', NGO:'Spice Garden', pickup:'Connaught Place', drop:'Karol Bagh', dist:'1.8 km', eta:'12 min', price:'₹168', otp:'7342', emoji:'🍛' },
+  { id:'q2', item:'Biryani', NGO:'Bombay Bites', pickup:'Bandra', drop:'Andheri', dist:'2.3 km', eta:'16 min', price:'₹144', otp:'8891', emoji:'🍚' },
+  { id:'q3', item:'Dal Makhani', NGO:'Royal Dine', pickup:'Park Street', drop:'Salt Lake', dist:'1.5 km', eta:'10 min', price:'₹168', otp:'5567', emoji:'🍲' },
+];
+
+const HISTORY = [
+  { item:'Paneer Tikka', dist:'2.1 km', earn:60, time:'2h ago', status:'Completed' },
+  { item:'Masala Dosa', dist:'1.4 km', earn:60, time:'4h ago', status:'Completed' },
+  { item:'Veg Thali', dist:'3.0 km', earn:60, time:'Yesterday', status:'Completed' },
+  { item:'Biryani', dist:'1.8 km', earn:60, time:'Yesterday', status:'Completed' },
+];
+
+function showSec(name, el) {
+  document.querySelectorAll('[id^="sec-"]').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-'+name).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (name === 'active') renderActiveOrder();
+  if (name === 'queue') renderQueue();
+  if (name === 'earnings') renderEarnings();
+}
+
+function setStatus(s) {
+  const btns = document.querySelectorAll('.status-btn');
+  btns.forEach(b => { b.className = 'status-btn'; });
+  const colors = { Online:'active-online', Busy:'active-busy', Offline:'active-offline' };
+  event.target.className = 'status-btn ' + colors[s];
+  document.getElementById('navStatus').textContent = s === 'Online' ? '🟢 Online' : s === 'Busy' ? '🟠 Busy' : '⚫ Offline';
+  document.getElementById('liveStatusBadge').textContent = s === 'Online' ? '🟢 Online — Ready for Orders' : s === 'Busy' ? '🟠 Busy — On Delivery' : '⚫ Offline';
+  showToast(s === 'Online' ? 'green' : 'orange', `Status: ${s}`, s === 'Online' ? 'You will now receive order assignments' : s === 'Busy' ? 'Marked as busy during delivery' : 'You are now offline');
+}
+
+function renderDashStats() {
+  const partners = getDeliveryPartners();
+  const p = partners[0] || { deliveries:234, earnings:18500, rating:4.8 };
+  currentPartner = p;
+  document.getElementById('partnerName').textContent = p.name || 'Arjun Sharma';
+  document.getElementById('partnerArea').textContent = p.area || 'Connaught Place';
+  document.getElementById('partnerRating').textContent = p.rating;
+  document.getElementById('partnerDeliveries').textContent = p.deliveries + ' deliveries';
+  document.getElementById('dashStats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon">🛵</span><div class="stat-value">${p.deliveries}</div><div class="stat-label">Total Deliveries</div></div>
+    <div class="stat-card"><span class="stat-icon">💰</span><div class="stat-value gold">₹${p.earnings.toLocaleString('en-IN')}</div><div class="stat-label">Total Earned</div></div>
+    <div class="stat-card"><span class="stat-icon">⭐</span><div class="stat-value orange">${p.rating}</div><div class="stat-label">Rating</div></div>
+    <div class="stat-card"><span class="stat-icon">🍽️</span><div class="stat-value">${p.deliveries}</div><div class="stat-label">Meals Delivered</div></div>`;
+}
+
+function renderActiveOrder() {
+  const el = document.getElementById('activeOrderContent');
+  const order = SAMPLE_QUEUE[0];
+  el.innerHTML = `
+    <div class="order-card-active mb-20">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+        <div style="font-size:40px;">${order.emoji}</div>
+        <div>
+          <div style="font-weight:700;font-size:18px;">${order.item}</div>
+          <div style="font-size:13px;color:#94a3b8;">🏪 ${order.NGO}</div>
+        </div>
+        <div style="margin-left:auto;">
+          <span class="badge badge-orange">⏱ ${order.eta} ETA</span>
+        </div>
+      </div>
+      <div class="grid-2 gap-16" style="margin-bottom:20px;">
+        <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:14px;">
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">📦 PICKUP FROM</div>
+          <div style="font-weight:700;">${order.pickup}</div>
+          <div style="font-size:12px;color:#22c55e;margin-top:4px;">Flash Sale Item</div>
+        </div>
+        <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:12px;padding:14px;">
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">📍 DELIVER TO</div>
+          <div style="font-weight:700;">${order.drop}</div>
+          <div style="font-size:12px;color:#f97316;margin-top:4px;">${order.dist} away</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;margin-bottom:16px;">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#94a3b8;">Order Value</div>
+          <div style="font-weight:700;color:#22c55e;font-size:1.2rem;">${order.price}</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);height:40px;"></div>
+        <div style="flex:1;text-align:center;">
+          <div style="font-size:11px;color:#94a3b8;">Your Earning</div>
+          <div style="font-weight:700;color:#fbbf24;font-size:1.2rem;">₹60</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);height:40px;"></div>
+        <div style="flex:1;text-align:right;">
+          <div style="font-size:11px;color:#94a3b8;">Distance</div>
+          <div style="font-weight:700;">${order.dist}</div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg w-full" onclick="openOTPModal('${order.id}','${order.item}','${order.otp}')">🔐 Confirm Delivery with OTP</button>
+    </div>
+    <div class="alert alert-green">
+      <span class="alert-icon">💡</span>
+      <span>Tip: Ask NGO to show their OTP code. Enter it to confirm delivery and earn ₹60.</span>
+    </div>`;
+}
+
+function renderQueue() {
+  document.getElementById('queueCount').textContent = SAMPLE_QUEUE.length + ' Pending';
+  const grid = document.getElementById('orderQueueGrid');
+  grid.innerHTML = SAMPLE_QUEUE.map((o, i) => `
+    <div class="card" style="border-color:rgba(249,115,22,0.2);">
+      <div class="flex-between mb-12">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:28px;">${o.emoji}</span>
+          <div>
+            <div style="font-weight:700;">${o.item}</div>
+            <div style="font-size:12px;color:#94a3b8;">${o.NGO}</div>
+          </div>
+        </div>
+        <span class="badge badge-blue">${o.dist}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;background:rgba(0,0,0,0.15);padding:10px;border-radius:8px;margin-bottom:12px;font-size:13px;">
+        <div><div style="font-size:10px;color:#94a3b8;">PICKUP</div><div style="font-weight:600;">${o.pickup}</div></div>
+        <div style="color:#94a3b8;">→</div>
+        <div style="text-align:right;"><div style="font-size:10px;color:#94a3b8;">DROP</div><div style="font-weight:600;">${o.drop}</div></div>
+      </div>
+      <div class="flex-between mb-12">
+        <span style="color:#22c55e;font-weight:700;">${o.price}</span>
+        <span style="font-size:12px;color:#94a3b8;">⏱ ${o.eta}</span>
+        <span style="color:#fbbf24;font-weight:700;">+₹60</span>
+      </div>
+      <button class="btn btn-orange btn-sm w-full" onclick="acceptOrder(${i})">✅ Accept Order</button>
+    </div>`).join('');
+}
+
+function renderEarnings() {
+  const partners = getDeliveryPartners();
+  const p = partners[0] || { deliveries:234, earnings:18500 };
+  const today = p.deliveries > 0 ? Math.floor(Math.random()*4+2) : 0;
+  const todayEarn = today * 60;
+  document.getElementById('earningsStats').innerHTML = `
+    <div class="earn-card"><div style="font-size:28px;margin-bottom:6px;">💰</div><div style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:800;color:#fbbf24;">₹${p.earnings.toLocaleString('en-IN')}</div><div style="font-size:12px;color:#94a3b8;">Total Earned</div></div>
+    <div class="earn-card"><div style="font-size:28px;margin-bottom:6px;">📅</div><div style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:800;color:#22c55e;">₹${todayEarn}</div><div style="font-size:12px;color:#94a3b8;">Earned Today</div></div>
+    <div class="earn-card"><div style="font-size:28px;margin-bottom:6px;">🛵</div><div style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:800;color:#f97316;">${today}</div><div style="font-size:12px;color:#94a3b8;">Deliveries Today</div></div>`;
+  const hist = document.getElementById('earningsHistory');
+  hist.innerHTML = HISTORY.map(h => `
+    <div class="history-row">
+      <div style="flex:1;font-weight:600;font-size:13px;">🍽️ ${h.item}</div>
+      <div style="font-size:12px;color:#94a3b8;">${h.dist}</div>
+      <div style="font-size:12px;color:#94a3b8;">${h.time}</div>
+      <div style="font-weight:700;color:#22c55e;">+₹${h.earn}</div>
+      <span class="badge badge-green" style="font-size:10px;">✅ Done</span>
+    </div>`).join('');
+}
+
+function openOTPModal(id, name, otp) {
+  currentDeliveryOTP = otp;
+  currentDeliveryOrder = { id, name };
+  document.getElementById('delivOrderName').textContent = name;
+  document.getElementById('delivOTPDisplay').innerHTML = otp.split('').map(d => `<div class="otp-digit">${d}</div>`).join('');
+  document.getElementById('otpDeliveryModal').classList.remove('hidden');
+}
+
+function confirmDelivery() {
+  const entered = document.getElementById('delivOTPInput').value.trim();
+  if (entered === currentDeliveryOTP) {
+    document.getElementById('otpDeliveryModal').classList.add('hidden');
+    document.getElementById('delivOTPInput').value = '';
+    showToast('green', '✅ Delivery Confirmed!', `${currentDeliveryOrder.name} delivered. ₹60 earned!`);
+    if (currentPartner) completeDelivery(currentPartner.id);
+    renderDashStats();
+  } else {
+    showToast('red', '❌ Wrong OTP', 'Please ask the NGO to check their OTP again');
+  }
+}
+
+function acceptOrder(idx) {
+  const o = SAMPLE_QUEUE[idx];
+  showToast('green', '✅ Order Accepted!', `${o.item} from ${o.NGO} — navigate to ${o.pickup}`);
+  showSec('active', document.querySelector('[href="#active"]'));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashStats();
+  document.querySelectorAll('.sidebar-menu a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const sec = a.getAttribute('href').replace('#','');
+      showSec(sec, a);
+    });
+  });
+  setTimeout(() => showToast('orange', '📦 New Order Assigned!', 'Biryani pickup from Bombay Bites — 2.3 km away'), 2500);
+});
+</script>
+</body>
+</html>

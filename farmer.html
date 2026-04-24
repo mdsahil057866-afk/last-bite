@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Farmer Dashboard — LAST BITE</title>
+<meta name="description" content="Farmer dashboard to list surplus crops and connect with local buyers."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<style>
+  /* Farmer Specific Colors */
+  :root {
+    --farm-green: #4d7c0f;
+    --farm-brown: #78350f;
+  }
+  .bg-farm-gradient { background: linear-gradient(135deg, rgba(77,124,15,0.1), rgba(120,53,15,0.05)); }
+  .border-farm { border: 1px solid rgba(77,124,15,0.3); }
+  .text-farm { color: #a3e635; }
+  .badge-farm { background: rgba(77,124,15,0.2); color: #bef264; border: 1px solid rgba(77,124,15,0.4); }
+  .btn-farm { background: linear-gradient(135deg, #65a30d, #4d7c0f); color: #fff; box-shadow: 0 4px 20px rgba(77,124,15,0.3); }
+  .btn-farm:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(77,124,15,0.4); }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="LAST BITE" class="logo-img">
+    <div class="logo-icon" style="display:none;">🍽️</div><span class="logo-text" style="display:none;">LAST BITE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="NGO.html">Flash Deals</a></li>
+    <li><a href="NGO.html">NGO</a></li>
+    <li><a href="farmer.html" class="active">Farmer Portal</a></li>
+    <li><a href="impact.html">Analytics</a></li>
+  </ul>
+  <div class="nav-cta">
+    <span class="badge badge-farm animate-pulse">🌾 Kisan Connect</span>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" style="border-right-color:rgba(77,124,15,0.2);">
+    <div style="text-align:center;padding:0 8px 20px;">
+      <div style="font-size:48px;margin-bottom:8px;">👨‍🌾</div>
+      <div style="font-weight:700;">Ramesh Kumar</div>
+      <div style="font-size:12px;color:#94a3b8;">Sonipat, Haryana</div>
+      <div style="margin-top:10px;">
+        <span class="badge badge-farm">Verified Farmer</span>
+      </div>
+    </div>
+    <div class="divider" style="background:rgba(77,124,15,0.2);"></div>
+    <ul class="sidebar-menu">
+      <div class="sidebar-section-label text-farm">Kisan Menu</div>
+      <li><a href="#overview" class="active" onclick="showFarmSection('overview',this)"><span class="menu-icon">📊</span>Dashboard</a></li>
+      <li><a href="#add" onclick="showFarmSection('add',this)"><span class="menu-icon">➕</span>List Surplus Crop</a></li>
+      <li><a href="#listings" onclick="showFarmSection('listings',this)"><span class="menu-icon">🌾</span>My Listings</a></li>
+      <li><a href="#impact" onclick="showFarmSection('impact',this)"><span class="menu-icon">💰</span>My Earnings</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- OVERVIEW SECTION -->
+    <div id="fsec-overview">
+      <div class="page-header flex-between">
+        <div><h1 class="page-title">🌾 Farmer Dashboard</h1><p class="page-sub">Sell surplus crops directly to local businesses</p></div>
+        <button class="btn btn-farm" onclick="showFarmSection('add',null);document.querySelector('[href=\'#add\']').classList.add('active');">➕ List Crop</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4 mb-24" id="farmStats"></div>
+
+      <!-- About the module -->
+      <div class="card mb-24 bg-farm-gradient border-farm">
+        <div style="display:flex;gap:16px;align-items:center;">
+          <div style="font-size:40px;">🚜</div>
+          <div>
+            <h3 class="card-title text-farm mb-8">Reduce Agri-Waste, Increase Income</h3>
+            <p style="color:#cbd5e1;font-size:14px;">Upload your unsold or extra harvest here. Our system directly connects you to nearby NGOs and bulk buyers, ensuring your hard work doesn't go to waste and you get fair prices.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Requests -->
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">🔔 Recent Buyer Requests</h3></div>
+        <div id="buyerRequests"></div>
+      </div>
+    </div>
+
+    <!-- ADD CROP SECTION -->
+    <div id="fsec-add" class="hidden">
+      <div class="page-header">
+        <h1 class="page-title">➕ List Surplus Crop</h1>
+        <p class="page-sub">Enter details of your harvest to find buyers</p>
+      </div>
+      <div class="card" style="max-width:600px;">
+        <div class="form-group">
+          <label class="form-label">Crop Name *</label>
+          <input id="cName" class="form-control" placeholder="e.g., Tomatoes, Onions, Wheat..." type="text"/>
+        </div>
+        <div class="grid-2 gap-16">
+          <div class="form-group">
+            <label class="form-label">Quantity Available (kg) *</label>
+            <input id="cQty" class="form-control" type="number" min="1" placeholder="e.g., 500"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Expected Price per kg (₹) *</label>
+            <input id="cPrice" class="form-control" type="number" min="1" placeholder="e.g., 15"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Crop Quality / Grade</label>
+          <select id="cGrade" class="form-control">
+            <option value="A">Grade A (Export Quality)</option>
+            <option value="B" selected>Grade B (Standard Fresh)</option>
+            <option value="C">Grade C (Processing Quality)</option>
+          </select>
+        </div>
+        <button class="btn btn-farm w-full btn-lg mt-16" onclick="submitCrop()">🚀 Publish Listing</button>
+      </div>
+    </div>
+
+    <!-- MY LISTINGS -->
+    <div id="fsec-listings" class="hidden">
+      <div class="page-header"><h1 class="page-title">🌾 My Listings</h1><p class="page-sub">Manage your active crop listings</p></div>
+      <div class="grid-3" id="cropListingsGrid"></div>
+    </div>
+
+    <!-- MY IMPACT / EARNINGS -->
+    <div id="fsec-impact" class="hidden">
+      <div class="page-header"><h1 class="page-title">💰 My Earnings & Impact</h1><p class="page-sub">Your contribution to the digital village economy</p></div>
+      <div class="grid-3 mb-24">
+        <div class="stat-card border-farm"><span class="stat-icon">₹</span><div class="stat-value text-farm" id="fIncome">₹45,000</div><div class="stat-label">Extra Income Generated</div></div>
+        <div class="stat-card border-farm"><span class="stat-icon">🌾</span><div class="stat-value" style="color:#fcd34d;" id="fSaved">3,500 kg</div><div class="stat-label">Crops Saved from Waste</div></div>
+        <div class="stat-card border-farm"><span class="stat-icon">🤝</span><div class="stat-value" style="color:#60a5fa;" id="fConnections">12</div><div class="stat-label">Direct B2B Connections</div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script>
+function showFarmSection(name, linkEl) {
+  document.querySelectorAll('[id^="fsec-"]').forEach(s => s.classList.add('hidden'));
+  document.getElementById('fsec-'+name).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (name==='overview') renderOverview();
+  if (name==='listings') renderListings();
+  if (name==='impact') renderEarnings();
+}
+
+function renderOverview() {
+  const crops = getCrops().filter(c => c.farmer === 'Ramesh Kumar');
+  const active = crops.filter(c => c.status === 'Available').length;
+  const requests = crops.filter(c => c.status === 'Requested').length;
+  const totalQty = crops.reduce((s,c) => s+(c.qty||0), 0);
+  
+  document.getElementById('farmStats').innerHTML = `
+    <div class="stat-card border-farm"><span class="stat-icon">🌾</span><div class="stat-value text-farm">${active}</div><div class="stat-label">Active Listings</div></div>
+    <div class="stat-card border-farm"><span class="stat-icon">🔔</span><div class="stat-value" style="color:#fcd34d;">${requests}</div><div class="stat-label">Pending Requests</div></div>
+    <div class="stat-card border-farm"><span class="stat-icon">📦</span><div class="stat-value">${totalQty} kg</div><div class="stat-label">Total Volume Listed</div></div>
+  `;
+
+  const reqCrops = crops.filter(c => c.status === 'Requested');
+  const reqDiv = document.getElementById('buyerRequests');
+  if (!reqCrops.length) {
+    reqDiv.innerHTML = '<div class="table-wrap"><div style="padding:24px;text-align:center;color:#94a3b8;">No pending requests right now.</div></div>';
+  } else {
+    reqDiv.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Crop</th><th>Volume</th><th>Price/kg</th><th>Total Value</th><th>Buyer</th><th>Action</th></tr></thead><tbody>${
+      reqCrops.map(c => `<tr>
+        <td style="font-weight:700;">${c.name}</td>
+        <td>${c.qty} kg</td>
+        <td>₹${c.price}</td>
+        <td style="color:#a3e635;font-weight:700;">₹${c.qty*c.price}</td>
+        <td>Local NGO</td>
+        <td><button class="btn btn-farm btn-xs" onclick="acceptRequest('${c.id}')">✅ Accept</button></td>
+      </tr>`).join('')
+    }</tbody></table></div>`;
+  }
+}
+
+function submitCrop() {
+  const name = document.getElementById('cName').value.trim();
+  const qty = parseInt(document.getElementById('cQty').value);
+  const price = parseInt(document.getElementById('cPrice').value);
+  
+  if (!name || !qty || !price) { showToast('red', '❌ Missing Fields', 'Please fill all details'); return; }
+  
+  addCrop({ name, qty, price, farmer:'Ramesh Kumar', area:'Sonipat, Haryana' });
+  
+  ['cName','cQty','cPrice'].forEach(id => document.getElementById(id).value='');
+  showFarmSection('listings', document.querySelector('[href="#listings"]'));
+}
+
+function renderListings() {
+  const crops = getCrops().filter(c => c.farmer === 'Ramesh Kumar');
+  const grid = document.getElementById('cropListingsGrid');
+  if (!crops.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">No listings yet.</div>'; return; }
+  
+  grid.innerHTML = crops.map(c => `
+    <div class="card border-farm">
+      <div class="flex-between mb-12">
+        <div style="font-weight:700;font-size:18px;">${c.name}</div>
+        <span class="badge ${c.status==='Available'?'badge-farm':'badge-orange'}">${c.status}</span>
+      </div>
+      <div style="color:#94a3b8;font-size:13px;margin-bottom:16px;">Listed: ${timeAgo(c.time)}</div>
+      <div class="flex-between" style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;">
+        <div><div style="font-size:11px;color:#94a3b8;">Volume</div><div style="font-weight:700;">${c.qty} kg</div></div>
+        <div><div style="font-size:11px;color:#94a3b8;">Rate</div><div style="font-weight:700;">₹${c.price}/kg</div></div>
+        <div style="text-align:right;"><div style="font-size:11px;color:#94a3b8;">Total Value</div><div style="font-weight:700;color:#a3e635;">₹${c.qty*c.price}</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function acceptRequest(id) {
+  const allCrops = getCrops();
+  const c = allCrops.find(x => x.id === id);
+  if (c) {
+    c.status = 'Sold';
+    saveCrops(allCrops);
+    showToast('green', '✅ Request Accepted', 'Buyer will contact you for pickup/delivery.');
+    renderOverview();
+    renderEarnings();
+  }
+}
+
+function renderEarnings() {
+  const impact = getImpact();
+  const crops = getCrops().filter(c => c.farmer === 'Ramesh Kumar' && c.status === 'Sold');
+  const connections = crops.length + 12; // dummy base
+  animateNumber(document.getElementById('fIncome'), impact.farmerIncome, 1500, '₹');
+  animateNumber(document.getElementById('fSaved'), impact.agriWastePrevented, 1500, '', ' kg');
+  animateNumber(document.getElementById('fConnections'), connections);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderOverview();
+});
+</script>
+</body>
+</html>
